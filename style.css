@@ -435,3 +435,16 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
+#pass-play-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
