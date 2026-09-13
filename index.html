@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tebak Bendera — Game Edukasi Dunia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen active">
+        <div class="loading-content">
+            <h1>TEBAK BENDERA</h1>
+            <p>"Menyiapkan perjalananmu keliling dunia..."</p>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <!-- Main Menu Screen -->
+    <div id="menu-screen" class="screen">
+        <div class="menu-container">
+            <h1 class="game-title">TEBAK BENDERA</h1>
+            <p class="game-subtitle">"Seberapa luas pengetahuanmu tentang dunia?"</p>
+            
+            <div class="menu-buttons">
+                <button id="btn-play" class="btn primary-btn">
+                    <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                    MULAI BERMAIN
+                </button>
+                <button id="btn-leaderboard" class="btn secondary-btn">
+                    <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M16 11V3H8v8H2v10h20V11h-6m-6-6h4v14h-4V5M4 13h2v6H4v-6m16 6h-2v-4h2v4z"/></svg>
+                    LEADERBOARD
+                </button>
+                <button id="btn-stats" class="btn secondary-btn">
+                    <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M22 21H2V3h2v16h18v2M4 17h3v-6H4v6m5 0h3V7H9v10m5 0h3v-3h-3v3m5 0h3V3h-3v14z"/></svg>
+                    STATISTIK & PRESTASI
+                </button>
+                <button id="btn-settings" class="btn secondary-btn">
+                    <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5a3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.65.07-.97c0-.32-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1c0 .32.03.65.07.97l-2.11 1.63c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.63z"/></svg>
+                    PENGATURAN
+                </button>
+                <button id="btn-help" class="btn secondary-btn">
+                    <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M11 18h2v-2h-2v2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8m0-14a4 4 0 0 0-4 4h2a2 2 0 0 1 2-2a2 2 0 0 1 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5a4 4 0 0 0-4-4z"/></svg>
+                    CARA BERMAIN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mode Select Screen -->
+    <div id="mode-screen" class="screen">
+        <div class="container">
+            <h2>PILIH MODE PERMAINAN</h2>
+            <div class="mode-list">
+                <button class="mode-card" data-mode="classic">
+                    <h3>CLASSIC</h3>
+                    <p>100 Level tantangan bertahap keliling dunia.</p>
+                </button>
+                <button class="mode-card" data-mode="timeattack">
+                    <h3>TIME ATTACK</h3>
+                    <p>Jawab sebanyak mungkin sebelum waktu habis.</p>
+                </button>
+                <button class="mode-card" data-mode="suddendath">
+                    <h3>SUDDEN DEATH</h3>
+                    <p>Salah satu kali langsung Game Over!</p>
+                </button>
+                <button class="mode-card" data-mode="dailychallenge">
+                    <h3>DAILY CHALLENGE</h3>
+                    <p>Tantangan spesial baru setiap hari.</p>
+                </button>
+                <button class="mode-card" data-mode="passplay">
+                    <h3>PASS & PLAY</h3>
+                    <p>Main bergantian bersama teman di satu HP.</p>
+                </button>
+            </div>
+            <button class="btn back-btn" id="back-to-menu-from-mode">KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="game-header">
+            <div class="score-display">SCORE: <span id="current-score">0</span></div>
+            <div class="level-display">LEVEL <span id="current-level">1</span>/100</div>
+        </div>
+
+        <div class="status-bar">
+            <div class="lives-container" id="lives-container">❤️❤️❤️</div>
+            <div class="streak-container" id="streak-container">🔥 0</div>
+        </div>
+
+        <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+
+        <div class="timer-container">
+            <div id="timer-bar" class="timer-bar"></div>
+            <span id="timer-text">20s</span>
+        </div>
+
+        <div class="flag-card">
+            <div class="flag-img-container">
+                <img id="flag-img" src="" alt="Bendera Negara" crossorigin="anonymous">
+                <div id="flag-loader" class="flag-loader">Memuat bendera...</div>
+            </div>
+            <h2 class="question-title">Bendera negara mana ini?</h2>
+        </div>
+
+        <div class="options-container" id="options-container">
+            <!-- Pilihan jawaban akan dimasukkan oleh JS -->
+        </div>
+
+        <div class="game-footer">
+            <button id="btn-hint" class="btn hint-btn">
+                <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A7 7 0 0 0 5 9c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1z"/></svg>
+                HINT (<span id="hint-count">3</span>)
+            </button>
+        </div>
+    </div>
+
+    <!-- Result Level Screen -->
+    <div id="result-screen" class="screen">
+        <div class="result-card">
+            <h2>LEVEL SELESAI!</h2>
+            <div class="result-stats">
+                <p>Skor Diperoleh: <span id="res-score">+100</span></p>
+                <p>Streak Terbaik: <span id="res-streak">0</span></p>
+                <p>Benar: <span id="res-correct">0</span> | Salah: <span id="res-wrong">0</span></p>
+                <p>Akurasi: <span id="res-accuracy">100%</span></p>
+            </div>
+            <div class="result-buttons">
+                <button id="btn-next-level" class="btn primary-btn">LANJUT LEVEL</button>
+                <button id="btn-retry-level" class="btn secondary-btn">ULANGI LEVEL</button>
+                <button id="btn-home" class="btn back-btn">KEMBALI KE MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen">
+        <div class="result-card">
+            <h2>GAME OVER</h2>
+            <p>Kesempatanmu habis!</p>
+            <div class="result-stats">
+                <p>Skor Akhir: <span id="go-score">0</span></p>
+                <p>Level Terakhir: <span id="go-level">1</span></p>
+            </div>
+            <button id="btn-try-again" class="btn primary-btn">COBA LAGI</button>
+            <button id="btn-go-home" class="btn back-btn">KEMBALI KE MENU</button>
+        </div>
+    </div>
+
+    <!-- Leaderboard Screen -->
+    <div id="leaderboard-screen" class="screen">
+        <div class="container">
+            <h2>LEADERBOARD LOKAL</h2>
+            <div class="leaderboard-list" id="leaderboard-list">
+                <!-- Data leaderboard lokal -->
+            </div>
+            <button class="btn secondary-btn" id="btn-reset-lb">RESET LEADERBOARD</button>
+            <button class="btn back-btn" id="back-to-menu-from-lb">KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- Stats Screen -->
+    <div id="stats-screen" class="screen">
+        <div class="container">
+            <h2>STATISTIK & PRESTASI</h2>
+            <div class="stats-box" id="stats-content">
+                <!-- Statistik diisi JS -->
+            </div>
+            <h3>PENCAPAIAN</h3>
+            <div class="achievement-list" id="achievement-list">
+                <!-- Achievement diisi JS -->
+            </div>
+            <button class="btn back-btn" id="back-to-menu-from-stats">KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settings-screen" class="screen">
+        <div class="container">
+            <h2>PENGATURAN</h2>
+            <div class="setting-item">
+                <label>Tema Tampilan</label>
+                <select id="theme-select">
+                    <option value="dark">Dark Mode</option>
+                    <option value="light">Light Mode</option>
+                    <option value="system">System Default</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>Suara (Sound)</label>
+                <input type="checkbox" id="sound-toggle" checked>
+            </div>
+            <div class="setting-item">
+                <button id="btn-reset-progress" class="btn danger-btn">Reset Semua Progres</button>
+            </div>
+            <button class="btn back-btn" id="back-to-menu-from-settings">KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- Help Screen -->
+    <div id="help-screen" class="screen">
+        <div class="container">
+            <h2>CARA BERMAIN</h2>
+            <div class="help-content">
+                <p>1. Tebak nama negara berdasarkan bendera yang muncul.</p>
+                <p>2. Pilih salah satu dari 4 opsi jawaban yang tersedia sebelum waktu habis.</p>
+                <p>3. Jawab cepat untuk mendapatkan bonus poin dan menjaga combo streak.</p>
+                <p>4. Gunakan tombol HINT jika kesulitan (jumlah hint terbatas).</p>
+                <p>5. Selesaikan 100 level atau uji kemampuanmu di mode tantangan lainnya!</p>
+            </div>
+            <button class="btn back-btn" id="back-to-menu-from-help">KEMBALI</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
