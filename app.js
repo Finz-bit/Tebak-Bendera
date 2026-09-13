@@ -126,6 +126,10 @@ const COUNTRIES = [
     { country: "Lebanon", code: "lb", hint: "Garis merah atas-bawah dengan pohon Cedar hijau di tengah." }
 ];
 
+// Konfigurasi Jumlah Negara per Level (Misal 5 Negara per Level)
+const COUNTRIES_PER_LEVEL = 5;
+const TOTAL_LEVELS = Math.ceil(COUNTRIES.length / COUNTRIES_PER_LEVEL);
+
 // State Game
 let gameState = {
     score: 0,
@@ -134,14 +138,14 @@ let gameState = {
     streak: 0,
     bestStreak: 0,
     hints: 3,
-    maxLevel: 20, // Total level classic dengan sistem multi-negara per level
+    maxLevel: TOTAL_LEVELS,
     soundEnabled: true,
     theme: 'dark',
     mode: 'classic',
     shuffledDeck: [],
     deckIndex: 0,
-    currentLevelCountries: [], // Daftar negara khusus untuk level aktif saat ini
-    levelQuestionIndex: 0,     // Indeks soal ke berapa di level ini
+    currentLevelCountries: [],
+    levelQuestionIndex: 0,
     stats: {
         totalPlayed: 0,
         totalAnswered: 0,
@@ -322,7 +326,7 @@ function startGameMode(mode) {
     gameState.deckIndex = 0;
     gameState.levelQuestionIndex = 0;
     
-    // Acak master deck secara total di awal game agar unik dan tidak ada duplikat global
+    // Acak master deck secara total di awal game
     gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
 
     if (mode === 'classic') {
@@ -333,19 +337,16 @@ function startGameMode(mode) {
     startLevel();
 }
 
-// Mengatur kelompok negara per level untuk mode Classic (misal 5 negara per level) tanpa ada yang berulang
 function setupClassicLevelCountries() {
-    let itemsPerLevel = 5;
-    let startIndex = (gameState.level - 1) * itemsPerLevel;
+    let startIndex = (gameState.level - 1) * COUNTRIES_PER_LEVEL;
     
-    // Jika deck habis atau level melebihi kapasitas, acak ulang deck master
     if (startIndex >= gameState.shuffledDeck.length) {
         gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
         startIndex = 0;
         gameState.level = 1;
     }
 
-    gameState.currentLevelCountries = gameState.shuffledDeck.slice(startIndex, startIndex + itemsPerLevel);
+    gameState.currentLevelCountries = gameState.shuffledDeck.slice(startIndex, startIndex + COUNTRIES_PER_LEVEL);
     gameState.levelQuestionIndex = 0;
 }
 
@@ -354,8 +355,9 @@ function startLevel() {
 }
 
 function loadNewQuestion() {
+    // Tampilkan format progress level yang benar (misal Soal 1 dari 5 di level X, atau tampilkan nomor urut soal di level)
     document.getElementById('current-score').innerText = gameState.score;
-    document.getElementById('current-level').innerText = gameState.level;
+    document.getElementById('current-level').innerText = `${gameState.level}/${gameState.maxLevel} (Soal ${gameState.levelQuestionIndex + 1}/${COUNTRIES_PER_LEVEL})`;
     document.getElementById('hint-count').innerText = gameState.hints;
     document.getElementById('streak-container').innerText = `🔥 ${gameState.streak}`;
     
@@ -369,13 +371,11 @@ function loadNewQuestion() {
     let correct;
 
     if (gameState.mode === 'classic') {
-        // Ambil dari kelompok negara level saat ini secara berurutan tanpa duplikat
         if (!gameState.currentLevelCountries || gameState.levelQuestionIndex >= gameState.currentLevelCountries.length) {
             setupClassicLevelCountries();
         }
         correct = gameState.currentLevelCountries[gameState.levelQuestionIndex];
     } else {
-        // Mode non-classic (Time Attack / Sudden Death): ambil dari deck utama secara terus menerus
         if (!gameState.shuffledDeck || gameState.shuffledDeck.length === 0 || gameState.deckIndex >= gameState.shuffledDeck.length) {
             gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
             gameState.deckIndex = 0;
@@ -384,7 +384,6 @@ function loadNewQuestion() {
         gameState.deckIndex++;
     }
 
-    // Ambil 3 pilihan salah secara acak dari database
     let wrongPool = COUNTRIES.filter(c => c.country !== correct.country);
     let wrongOptions = [];
     while(wrongOptions.length < 3) {
@@ -531,15 +530,12 @@ function checkGameStatusAfterAnswer() {
     }
 }
 
-// Mengatur alur maju di mode Classic (periksa apakah soal dalam level sudah habis)
 function handleClassicProgression() {
     gameState.levelQuestionIndex++;
     
-    // Jika semua soal di level ini (misal 5 negara) sudah habis dijawab, tampilkan layar sukses level
     if (gameState.levelQuestionIndex >= gameState.currentLevelCountries.length) {
         showLevelResult();
     } else {
-        // Lanjut ke negara berikutnya di level yang sama tanpa mengulang negara sebelumnya
         showScreen('game-screen');
         startLevel();
     }
