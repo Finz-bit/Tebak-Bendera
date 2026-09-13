@@ -126,7 +126,6 @@ const COUNTRIES = [
     { country: "Lebanon", code: "lb", hint: "Garis merah atas-bawah dengan pohon Cedar hijau di tengah." }
 ];
 
-// Konfigurasi Jumlah Negara per Level (Misal 5 Negara per Level)
 const COUNTRIES_PER_LEVEL = 5;
 const TOTAL_LEVELS = Math.ceil(COUNTRIES.length / COUNTRIES_PER_LEVEL);
 
@@ -146,6 +145,8 @@ let gameState = {
     deckIndex: 0,
     currentLevelCountries: [],
     levelQuestionIndex: 0,
+    timeAttackSeconds: 45, // Default awal
+    customTimeAttackDuration: 45, // Durasi pilihan user (bisa diubah: 10, 20, 60, 120, dll)
     stats: {
         totalPlayed: 0,
         totalAnswered: 0,
@@ -282,6 +283,20 @@ function initScreens() {
         card.addEventListener('click', () => {
             playSound('click');
             const mode = card.getAttribute('data-mode');
+            
+            if (mode === 'timeattack') {
+                // Munculkan pilihan durasi waktu sebelum memulai time attack
+                let pilihan = prompt("Pilih durasi waktu Time Attack (dalam detik):\nContoh: 10, 20, 45, 60, 120", gameState.customTimeAttackDuration || 45);
+                if (pilihan !== null) {
+                    let parsed = parseInt(pilihan);
+                    if (!isNaN(parsed) && parsed > 0) {
+                        gameState.customTimeAttackDuration = parsed;
+                    }
+                } else {
+                    return; // Batal jika user klik cancel
+                }
+            }
+            
             startGameMode(mode);
         });
     });
@@ -326,7 +341,12 @@ function startGameMode(mode) {
     gameState.deckIndex = 0;
     gameState.levelQuestionIndex = 0;
     
-    // Acak master deck secara total di awal game
+    if (mode === 'timeattack') {
+        gameState.timeAttackSeconds = gameState.customTimeAttackDuration; // Menggunakan durasi pilihan user
+    } else {
+        gameState.timeAttackSeconds = 45;
+    }
+    
     gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
 
     if (mode === 'classic') {
@@ -342,8 +362,6 @@ function setupClassicLevelCountries() {
     
     if (startIndex >= gameState.shuffledDeck.length) {
         gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
-        startIndex = 0;
-        gameState.level = 1;
     }
 
     gameState.currentLevelCountries = gameState.shuffledDeck.slice(startIndex, startIndex + COUNTRIES_PER_LEVEL);
@@ -355,18 +373,24 @@ function startLevel() {
 }
 
 function loadNewQuestion() {
-    // Tampilkan format progress level yang benar (misal Soal 1 dari 5 di level X, atau tampilkan nomor urut soal di level)
     document.getElementById('current-score').innerText = gameState.score;
-    document.getElementById('current-level').innerText = `${gameState.level}/${gameState.maxLevel} (Soal ${gameState.levelQuestionIndex + 1}/${COUNTRIES_PER_LEVEL})`;
+    
+    if (gameState.mode === 'classic') {
+        document.getElementById('current-level').innerText = `Level ${gameState.level}/${gameState.maxLevel} (Soal ${gameState.levelQuestionIndex + 1}/${COUNTRIES_PER_LEVEL})`;
+        let prog = ((gameState.level - 1) / gameState.maxLevel) * 100;
+        document.getElementById('progress-bar').style.width = `${prog}%`;
+    } else if (gameState.mode === 'timeattack') {
+        document.getElementById('current-level').innerText = `⏱️ TIME ATTACK`;
+    } else {
+        document.getElementById('current-level').innerText = `SUDDEN DEATH`;
+    }
+
     document.getElementById('hint-count').innerText = gameState.hints;
     document.getElementById('streak-container').innerText = `🔥 ${gameState.streak}`;
     
     let hearts = '';
     for(let i=0; i<gameState.lives; i++) hearts += '❤️';
     document.getElementById('lives-container').innerText = hearts;
-
-    let prog = ((gameState.level - 1) / gameState.maxLevel) * 100;
-    document.getElementById('progress-bar').style.width = `${prog}%`;
 
     let correct;
 
@@ -424,7 +448,8 @@ function loadNewQuestion() {
         optContainer.appendChild(btn);
     });
 
-    startTimer(12);
+    let questionTimeLimit = (gameState.mode === 'timeattack') ? 8 : 12;
+    startTimer(questionTimeLimit);
 }
 
 function startTimer(seconds) {
@@ -438,7 +463,21 @@ function startTimer(seconds) {
         timeLeft -= 0.1;
         let pct = (timeLeft / maxTime) * 100;
         timerBar.style.width = `${pct}%`;
-        timerText.innerText = `${Math.ceil(timeLeft)}s`;
+        
+        if (gameState.mode === 'timeattack') {
+            timerText.innerText = `Sisa Waktu Global: ${Math.ceil(gameState.timeAttackSeconds)}s`;
+        } else {
+            timerText.innerText = `${Math.ceil(timeLeft)}s`;
+        }
+
+        if (gameState.mode === 'timeattack') {
+            gameState.timeAttackSeconds -= 0.1;
+            if (gameState.timeAttackSeconds <= 0) {
+                clearInterval(timerInterval);
+                triggerGameOver();
+                return;
+            }
+        }
 
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
@@ -479,6 +518,10 @@ function selectAnswer(selectedCountry, btnElement) {
         let comboBonus = gameState.streak >= 5 ? 200 : 100;
         gameState.score += comboBonus + speedBonus;
 
+        if (gameState.mode === 'timeattack') {
+            gameState.timeAttackSeconds += 3; // Tambah 3 detik saat benar
+        }
+
         gameState.stats.correct++;
         if (!gameState.stats.countriesGuessed.includes(currentQuestion.correct.country)) {
             gameState.stats.countriesGuessed.push(currentQuestion.correct.country);
@@ -490,7 +533,7 @@ function selectAnswer(selectedCountry, btnElement) {
             if (gameState.mode === 'classic') {
                 handleClassicProgression();
             } else {
-                nextLevelProgression();
+                loadNewQuestion();
             }
         }, 800);
     } else {
@@ -500,6 +543,14 @@ function selectAnswer(selectedCountry, btnElement) {
         gameState.lives--;
         gameState.score = Math.max(0, gameState.score - 30);
         gameState.stats.wrong++;
+
+        if (gameState.mode === 'timeattack') {
+            gameState.timeAttackSeconds -= 4; // Kurangi 4 detik saat salah
+            if (gameState.timeAttackSeconds <= 0) {
+                triggerGameOver();
+                return;
+            }
+        }
 
         highlightCorrectAnswer();
 
@@ -525,7 +576,7 @@ function checkGameStatusAfterAnswer() {
         if (gameState.mode === 'classic') {
             handleClassicProgression();
         } else {
-            nextLevelProgression();
+            loadNewQuestion();
         }
     }
 }
@@ -569,16 +620,10 @@ function nextLevel() {
     startLevel();
 }
 
-function nextLevelProgression() {
-    gameState.level++;
-    showScreen('game-screen');
-    startLevel();
-}
-
 function triggerGameOver() {
     playSound('gameover');
     document.getElementById('go-score').innerText = gameState.score;
-    document.getElementById('go-level').innerText = gameState.level;
+    document.getElementById('go-level').innerText = (gameState.mode === 'classic') ? gameState.level : gameState.stats.correct;
     
     if (gameState.score > gameState.stats.highestScore) gameState.stats.highestScore = gameState.score;
     saveGameData();
