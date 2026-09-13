@@ -1,124 +1,129 @@
-// Database Negara Diperluas (Hampir 200+ Negara & Wilayah di Dunia)
+// Database Diperluas (Semua Negara & Wilayah di Dunia)
 const COUNTRIES = [
-    // Level 1-10 (Sangat Mudah / Negara Populer)
-    { country: "Indonesia", code: "id", hint: "Negara kepulauan terbesar di Asia Tenggara.", difficulty: 1 },
-    { country: "Jepang", code: "jp", hint: "Negara Matahari Terbit di Asia Timur.", difficulty: 1 },
-    { country: "Amerika Serikat", code: "us", hint: "Negara Paman Sam dengan bendera bintang-garis.", difficulty: 1 },
-    { country: "Kanada", code: "ca", hint: "Terkenal dengan simbol daun maple.", difficulty: 1 },
-    { country: "Inggris", code: "gb", hint: "Negara asal bendera Union Jack.", difficulty: 1 },
-    { country: "Prancis", code: "fr", hint: "Negara Menara Eiffel di Eropa Barat.", difficulty: 1 },
-    { country: "Jerman", code: "de", hint: "Negara industri di Eropa dengan tiga warna horizontal.", difficulty: 1 },
-    { country: "Italia", code: "it", hint: "Negara berbentuk sepatu boot.", difficulty: 1 },
-    { country: "Australia", code: "au", hint: "Negara benua sekaligus pulau di selatan.", difficulty: 1 },
-    { country: "Brasil", code: "br", hint: "Negara sepak bola terkenal di Amerika Selatan.", difficulty: 1 },
-    { country: "Korea Selatan", code: "kr", hint: "Negara ginseng dengan lambang Taeguk di tengah.", difficulty: 1 },
-    { country: "Spanyol", code: "es", hint: "Negara matador di Semenanjung Iberia.", difficulty: 1 },
-    { country: "Belanda", code: "nl", hint: "Negara kincir angin dan tulip.", difficulty: 1 },
-    { country: "India", code: "in", hint: "Negara Asia Selatan dengan roda Ashok Chakra di tengah.", difficulty: 1 },
-    { country: "Tiongkok", code: "cn", hint: "Negara berbendera merah dengan lima bintang kuning.", difficulty: 1 },
-
-    // Level 11-30 (Mudah - Menengah)
-    { country: "Argentina", code: "ar", hint: "Negara penghasil daging sapi dengan matahari di bendera.", difficulty: 2 },
-    { country: "Meksiko", code: "mx", hint: "Negara Amerika Utara dengan lambang burung elang dan ular.", difficulty: 2 },
-    { country: "Rusia", code: "ru", hint: "Negara terluas di dunia dengan tiga warna horizontal.", difficulty: 2 },
-    { country: "Arab Saudi", code: "sa", hint: "Negara Hijau dengan tulisan kaligrafi syahadat.", difficulty: 2 },
-    { country: "Afrika Selatan", code: "za", hint: "Negara ujung benua Afrika dengan bendera warna-warni.", difficulty: 2 },
-    { country: "Malaysia", code: "my", hint: "Negara tetangga dengan lambang bulan sabit dan bintang.", difficulty: 2 },
-    { country: "Singapura", code: "sg", hint: "Negara pulau maju di selatan Malaysia.", difficulty: 2 },
-    { country: "Thailand", code: "th", hint: "Negara Gajah Putih di Asia Tenggara.", difficulty: 2 },
-    { country: "Vietnam", code: "vn", hint: "Negara bendera merah dengan satu bintang kuning besar.", difficulty: 2 },
-    { country: "Filipina", code: "ph", hint: "Negara kepulauan dengan matahari dan tiga bintang.", difficulty: 2 },
-    { country: "Turki", code: "tr", hint: "Negara dua benua dengan bulan sabit putih.", difficulty: 2 },
-    { country: "Swiss", code: "ch", hint: "Negara bendera palang putih berlatar merah.", difficulty: 2 },
-    { country: "Swedia", code: "se", hint: "Negara Skandinavia dengan salib kuning di atas biru.", difficulty: 2 },
-    { country: "Norwegia", code: "no", hint: "Negara Nordik dengan salib merah bergaris putih.", difficulty: 2 },
-    { country: "Portugal", code: "pt", hint: "Negara asal Cristiano Ronaldo di Semenanjung Iberia.", difficulty: 2 },
-    { country: "Selandia Baru", code: "nz", hint: "Negara Pasifik dengan lambang Salib Selatan.", difficulty: 2 },
-    { country: "Mesir", code: "eg", hint: "Negara piramida dengan lambang Elang Saladin.", difficulty: 2 },
-    { country: "Yunani", code: "gr", hint: "Negara asal mitologi kuno dengan garis biru-putih.", difficulty: 2 },
-    { country: "Polandia", code: "pl", hint: "Negara Eropa Tengah dengan warna putih di atas merah.", difficulty: 2 },
-    { country: "Ukraina", code: "ua", hint: "Negara dengan kombinasi warna biru langit dan kuning ladang gandum.", difficulty: 2 },
-
-    // Level 31-50 (Menengah)
-    { country: "Belgia", code: "be", hint: "Negara cokelat dengan tiga garis vertikal hitam-kuning-merah.", difficulty: 3 },
-    { country: "Austria", code: "at", hint: "Negara Alpen dengan garis merah-putih-merah.", difficulty: 3 },
-    { country: "Denmark", code: "dk", hint: "Negara Skandinavia pencipta Lego.", difficulty: 3 },
-    { country: "Finlandia", code: "fi", hint: "Negara seribu danau dengan salib biru.", difficulty: 3 },
-    { country: "Irlandia", code: "ie", hint: "Negara hijau-putih-oranye di Eropa barat.", difficulty: 3 },
-    { country: "Kolombia", code: "co", hint: "Negara Amerika Selatan dengan warna kuning dominan.", difficulty: 3 },
-    { country: "Chili", code: "cl", hint: "Negara panjang di barat Amerika Selatan.", difficulty: 3 },
-    { country: "Peru", code: "pe", hint: "Negara situs Machu Picchu.", difficulty: 3 },
-    { country: "Maroko", code: "ma", hint: "Negara Afrika Utara dengan bintang hijau bersegi lima.", difficulty: 3 },
-    { country: "Aljazair", code: "dz", hint: "Negara Afrika utara dengan bulan sabit hijau.", difficulty: 3 },
-    { country: "Nigeria", code: "ng", hint: "Negara Afrika barat dengan dua garis hijau dan putih di tengah.", difficulty: 3 },
-    { country: "Kenya", code: "ke", hint: "Negara safari terkenal dengan perisai dan tombak Maasai.", difficulty: 3 },
-    { country: "Pakistan", code: "pk", hint: "Negara Asia Selatan dengan bidang putih besar di sisi kiri.", difficulty: 3 },
-    { country: "Bangladesh", code: "bd", hint: "Negara dengan lingkaran merah menyala di atas latar hijau.", difficulty: 3 },
-    { country: "Iran", code: "ir", hint: "Negara Timur Tengah dengan lambang khusus di tengah.", difficulty: 3 },
-    { country: "Kroasia", code: "hr", hint: "Negara pecahan Yugoslavia dengan lambang papan catur merah-putih.", difficulty: 3 },
-    { country: "Ceko", code: "cz", hint: "Negara Eropa Tengah dengan segitiga biru di sisi kiri.", difficulty: 3 },
-    { country: "Hungaria", code: "hu", hint: "Tiga garis horizontal merah, putih, hijau.", difficulty: 3 },
-    { country: "Rumania", code: "ro", hint: "Tiga garis vertikal biru, kuning, merah.", difficulty: 3 },
-    { country: "Bulgaria", code: "bg", hint: "Tiga garis horizontal putih, hijau, merah.", difficulty: 3 },
-
-    // Level 51-75 (Sulit)
-    { country: "Serbia", code: "rs", hint: "Negara Eropa timur dengan lambang kerajaan kecil.", difficulty: 4 },
-    { country: "Slowakia", code: "sk", hint: "Memiliki lambang perisai ganda di atas tiga warna.", difficulty: 4 },
-    { country: "Lituania", code: "lt", hint: "Kuning, hijau, merah secara horizontal.", difficulty: 4 },
-    { country: "Latvia", code: "lv", hint: "Merah marun dengan garis putih tipis di tengah.", difficulty: 4 },
-    { country: "Estonia", code: "ee", hint: "Biru, hitam, putih secara horizontal.", difficulty: 4 },
-    { country: "Islandia", code: "is", hint: "Kebalikan dari bendera Norwegia (salib putih berbingkai merah).", difficulty: 4 },
-    { country: "Luksemburg", code: "lu", hint: "Merah, putih, biru muda secara horizontal.", difficulty: 4 },
-    { country: "Monako", code: "mc", hint: "Merah di atas, putih di bawah (mirip Polandia terbalik).", difficulty: 4 },
-    { country: "Vatikan", code: "va", hint: "Kuning dan putih dengan lambang kunci silang.", difficulty: 4 },
-    { country: "San Marino", code: "sm", hint: "Putih dan biru muda dengan lambang menara tiga.", difficulty: 4 },
-    { country: "Malta", code: "mt", hint: "Putih-merah dengan salib George kecil di pojok.", difficulty: 4 },
-    { country: "Andorra", code: "ad", hint: "Tiga garis vertikal biru, kuning, merah dengan lambang tengah.", difficulty: 4 },
-    { country: "Liechtenstein", code: "li", hint: "Biru di atas, merah di bawah dengan mahkota kecil.", difficulty: 4 },
-    { country: "Uruguay", code: "uy", hint: "Garis biru-putih dengan matahari tersenyum di pojok.", difficulty: 4 },
-    { country: "Paraguay", code: "py", hint: "Tiga warna horizontal dengan lambang negara berbeda di tiap sisi.", difficulty: 4 },
-    { country: "Bolivia", code: "bo", hint: "Merah, kuning, hijau dengan lambang negara.", difficulty: 4 },
-    { country: "Ekuador", code: "ec", hint: "Kuning, biru, merah dengan lambang burung condor.", difficulty: 4 },
-    { country: "Venezuela", code: "ve", hint: "Tiga warna dengan lengkungan bintang putih di tengah.", difficulty: 4 },
-    { country: "Kuba", code: "cu", hint: "Garis biru-putih dengan segitiga merah dan bintang putih.", difficulty: 4 },
-    { country: "Kosta Rika", code: "cr", hint: "Biru, putih, merah, putih, biru dengan lambang tengah.", difficulty: 4 },
-    { country: "Panama", code: "pa", hint: "Empat kotak dengan bintang biru dan merah.", difficulty: 4 },
-    { country: "Uruguay", code: "uy", hint: "Garis biru-putih dengan matahari.", difficulty: 4 },
-    { country: "Dominika", code: "dm", hint: "Hijau dengan salib salib tiga warna dan burung sisserou.", difficulty: 4 },
-    { country: "Barbados", code: "bb", hint: "Tiga vertikal biru-kuning-biru dengan lambang Trisula hitam.", difficulty: 4 },
-    { country: "Jamaika", code: "jm", hint: "Salib diagonal berwarna kuning dengan segitiga hijau dan hitam.", difficulty: 4 },
-
-    // Level 76-100 (Sangat Sulit / Negara Kecil, Afrika, & Kepulauan Unik)
-    { country: "Nepal", code: "np", hint: "Satu-satunya negara dengan bendera bukan persegi panjang.", difficulty: 5 },
-    { country: "Bhutan", code: "bt", hint: "Negara Himalaya dengan gambar naga putih.", difficulty: 5 },
-    { country: "Sri Lanka", code: "lk", hint: "Bendera bergambar singa memegang pedang.", difficulty: 5 },
-    { country: "Kamboja", code: "kh", hint: "Bendera bergambar bangunan Angkor Wat.", difficulty: 5 },
-    { country: "Laos", code: "la", hint: "Bendera dengan lingkaran putih besar di tengah bidang merah-biru.", difficulty: 5 },
-    { country: "Myanmar", code: "mm", hint: "Tiga garis horizontal kuning, hijau, merah dengan bintang besar.", difficulty: 5 },
-    { country: "Brunei", code: "bn", hint: "Kuning dengan lambang bulan sabit merah melintang.", difficulty: 5 },
-    { country: "Mongolia", code: "mn", hint: "Merah-biru-merah dengan simbol Soyombo di sisi kiri.", difficulty: 5 },
-    { country: "Kazakhstan", code: "kz", hint: "Biru muda dengan lambang matahari dan pola tradisional kuning.", difficulty: 5 },
-    { country: "Uzbekistan", code: "uz", hint: "Biru, putih, hijau dengan bulan sabit dan bintang.", difficulty: 5 },
-    { country: "Madagaskar", code: "mg", hint: "Putih vertikal di kiri, merah dan hijau horizontal di kanan.", difficulty: 5 },
-    { country: "Ghana", code: "gh", hint: "Merah, kuning, hijau dengan bintang hitam di tengah.", difficulty: 5 },
-    { country: "Senegal", code: "sn", hint: "Hijau, kuning, merah dengan bintang hijau di tengah.", difficulty: 5 },
-    { country: "Kamerun", code: "cm", hint: "Hijau, merah, kuning vertikal dengan bintang emas.", difficulty: 5 },
-    { country: "Etiopia", code: "et", hint: "Hijau, kuning, merah horizontal dengan lambang bintang biru.", difficulty: 5 },
-    { country: "Tunisia", code: "tn", hint: "Merah dengan lingkaran putih dan bulan sabit merah di tengah.", difficulty: 5 },
-    { country: "Zimbabwe", code: "zw", hint: "Tujuh garis horizontal dengan burung Zimbabwe di segitiga putih.", difficulty: 5 },
-    { country: "Uganda", code: "ug", hint: "Garis hitam-kuning-merah berulang dengan burung bangau.", difficulty: 5 },
-    { country: "Mozambik", code: "mz", hint: "Bendera unik bergambar buku, cangkul, dan senjata serbu.", difficulty: 5 },
-    { country: "Angola", code: "ao", hint: "Merah dan hitam dengan lambang roda gigi dan parang.", difficulty: 5 },
-    { country: "Fiji", code: "fj", hint: "Biru muda dengan lambang Union Jack dan perisai.", difficulty: 5 },
-    { country: "Papua Nugini", code: "pg", hint: "Merah-hitam diagonal dengan burung cendrawasih.", difficulty: 5 },
-    { country: "Samoa", code: "ws", hint: "Merah dengan bidang biru di pojok berisi 5 bintang.", difficulty: 5 },
-    { country: "Tonga", code: "to", hint: "Merah dengan kotak putih di pojok berisi salib merah.", difficulty: 5 },
-    { country: "Mauritius", code: "mu", hint: "Empat warna horizontal: merah, biru, kuning, hijau.", difficulty: 5 },
-    { country: "Seychelles", code: "sc", hint: "Pita warna-warni menyebar dari sudut kiri bawah.", difficulty: 5 },
-    { country: "Maladewa", code: "mv", hint: "Merah berbingkai hijau dengan bulan sabit putih di tengah.", difficulty: 5 },
-    { country: "Komoro", code: "km", hint: "Empat garis horizontal dengan segitiga hijau berisi bulan sabit.", difficulty: 5 },
-    { country: "Djibouti", code: "dj", hint: "Biru dan hijau dengan segitiga putih dan bintang merah.", difficulty: 5 },
-    { country: "Eritrea", code: "er", hint: "Segitiga merah besar dengan cabang zaitun emas.", difficulty: 5 }
+    { country: "Indonesia", code: "id", hint: "Negara kepulauan terbesar di Asia Tenggara." },
+    { country: "Jepang", code: "jp", hint: "Negara Matahari Terbit di Asia Timur." },
+    { country: "Amerika Serikat", code: "us", hint: "Negara Paman Sam dengan bendera bintang-garis." },
+    { country: "Kanada", code: "ca", hint: "Terkenal dengan simbol daun maple." },
+    { country: "Inggris", code: "gb", hint: "Negara asal bendera Union Jack." },
+    { country: "Prancis", code: "fr", hint: "Negara Menara Eiffel di Eropa Barat." },
+    { country: "Jerman", code: "de", hint: "Negara industri di Eropa dengan tiga warna horizontal." },
+    { country: "Italia", code: "it", hint: "Negara berbentuk sepatu boot." },
+    { country: "Australia", code: "au", hint: "Negara benua sekaligus pulau di selatan." },
+    { country: "Brasil", code: "br", hint: "Negara sepak bola terkenal di Amerika Selatan." },
+    { country: "Korea Selatan", code: "kr", hint: "Negara ginseng dengan lambang Taeguk di tengah." },
+    { country: "Spanyol", code: "es", hint: "Negara matador di Semenanjung Iberia." },
+    { country: "Belanda", code: "nl", hint: "Negara kincir angin dan tulip." },
+    { country: "India", code: "in", hint: "Negara Asia Selatan dengan roda Ashok Chakra di tengah." },
+    { country: "Tiongkok", code: "cn", hint: "Negara berbendera merah dengan lima bintang kuning." },
+    { country: "Argentina", code: "ar", hint: "Negara penghasil daging sapi dengan matahari di bendera." },
+    { country: "Meksiko", code: "mx", hint: "Negara Amerika Utara dengan lambang burung elang dan ular." },
+    { country: "Rusia", code: "ru", hint: "Negara terluas di dunia dengan tiga warna horizontal." },
+    { country: "Arab Saudi", code: "sa", hint: "Negara Hijau dengan tulisan kaligrafi syahadat." },
+    { country: "Afrika Selatan", code: "za", hint: "Negara ujung benua Afrika dengan bendera warna-warni." },
+    { country: "Malaysia", code: "my", hint: "Negara tetangga dengan lambang bulan sabit dan bintang." },
+    { country: "Singapura", code: "sg", hint: "Negara pulau maju di selatan Malaysia." },
+    { country: "Thailand", code: "th", hint: "Negara Gajah Putih di Asia Tenggara." },
+    { country: "Vietnam", code: "vn", hint: "Negara bendera merah dengan satu bintang kuning besar." },
+    { country: "Filipina", code: "ph", hint: "Negara kepulauan dengan matahari dan tiga bintang." },
+    { country: "Turki", code: "tr", hint: "Negara dua benua dengan bulan sabit putih." },
+    { country: "Swiss", code: "ch", hint: "Negara bendera palang putih berlatar merah." },
+    { country: "Swedia", code: "se", hint: "Negara Skandinavia dengan salib kuning di atas biru." },
+    { country: "Norwegia", code: "no", hint: "Negara Nordik dengan salib merah bergaris putih." },
+    { country: "Portugal", code: "pt", hint: "Negara asal Cristiano Ronaldo di Semenanjung Iberia." },
+    { country: "Selandia Baru", code: "nz", hint: "Negara Pasifik dengan lambang Salib Selatan." },
+    { country: "Mesir", code: "eg", hint: "Negara piramida dengan lambang Elang Saladin." },
+    { country: "Yunani", code: "gr", hint: "Negara asal mitologi kuno dengan garis biru-putih." },
+    { country: "Polandia", code: "pl", hint: "Negara Eropa Tengah dengan warna putih di atas merah." },
+    { country: "Ukraina", code: "ua", hint: "Negara dengan kombinasi warna biru langit dan kuning ladang gandum." },
+    { country: "Belgia", code: "be", hint: "Negara cokelat dengan tiga garis vertikal hitam-kuning-merah." },
+    { country: "Austria", code: "at", hint: "Negara Alpen dengan garis merah-putih-merah." },
+    { country: "Denmark", code: "dk", hint: "Negara Skandinavia pencipta Lego." },
+    { country: "Finlandia", code: "fi", hint: "Negara seribu danau dengan salib biru." },
+    { country: "Irlandia", code: "ie", hint: "Negara hijau-putih-oranye di Eropa barat." },
+    { country: "Kolombia", code: "co", hint: "Negara Amerika Selatan dengan warna kuning dominan." },
+    { country: "Chili", code: "cl", hint: "Negara panjang di barat Amerika Selatan." },
+    { country: "Peru", code: "pe", hint: "Negara situs Machu Picchu." },
+    { country: "Maroko", code: "ma", hint: "Negara Afrika Utara dengan bintang hijau bersegi lima." },
+    { country: "Aljazair", code: "dz", hint: "Negara Afrika utara dengan bulan sabit hijau." },
+    { country: "Nigeria", code: "ng", hint: "Negara Afrika barat dengan dua garis hijau dan putih di tengah." },
+    { country: "Kenya", code: "ke", hint: "Negara safari terkenal dengan perisai dan tombak Maasai." },
+    { country: "Pakistan", code: "pk", hint: "Negara Asia Selatan dengan bidang putih besar di sisi kiri." },
+    { country: "Bangladesh", code: "bd", hint: "Negara dengan lingkaran merah menyala di atas latar hijau." },
+    { country: "Iran", code: "ir", hint: "Negara Timur Tengah dengan lambang khusus di tengah." },
+    { country: "Kroasia", code: "hr", hint: "Negara pecahan Yugoslavia dengan lambang papan catur merah-putih." },
+    { country: "Ceko", code: "cz", hint: "Negara Eropa Tengah dengan segitiga biru di sisi kiri." },
+    { country: "Hungaria", code: "hu", hint: "Tiga garis horizontal merah, putih, hijau." },
+    { country: "Rumania", code: "ro", hint: "Tiga garis vertikal biru, kuning, merah." },
+    { country: "Bulgaria", code: "bg", hint: "Tiga garis horizontal putih, hijau, merah." },
+    { country: "Serbia", code: "rs", hint: "Negara Eropa timur dengan lambang kerajaan kecil." },
+    { country: "Slowakia", code: "sk", hint: "Memiliki lambang perisai ganda di atas tiga warna." },
+    { country: "Lituania", code: "lt", hint: "Kuning, hijau, merah secara horizontal." },
+    { country: "Latvia", code: "lv", hint: "Merah marun dengan garis putih tipis di tengah." },
+    { country: "Estonia", code: "ee", hint: "Biru, hitam, putih secara horizontal." },
+    { country: "Islandia", code: "is", hint: "Kebalikan dari bendera Norwegia (salib putih berbingkai merah)." },
+    { country: "Luksemburg", code: "lu", hint: "Merah, putih, biru muda secara horizontal." },
+    { country: "Monako", code: "mc", hint: "Merah di atas, putih di bawah (mirip Polandia terbalik)." },
+    { country: "Vatikan", code: "va", hint: "Kuning dan putih dengan lambang kunci silang." },
+    { country: "San Marino", code: "sm", hint: "Putih dan biru muda dengan lambang menara tiga." },
+    { country: "Malta", code: "mt", hint: "Putih-merah dengan salib George kecil di pojok." },
+    { country: "Andorra", code: "ad", hint: "Tiga garis vertikal biru, kuning, merah dengan lambang tengah." },
+    { country: "Liechtenstein", code: "li", hint: "Biru di atas, merah di bawah dengan mahkota kecil." },
+    { country: "Uruguay", code: "uy", hint: "Garis biru-putih dengan matahari tersenyum di pojok." },
+    { country: "Paraguay", code: "py", hint: "Tiga warna horizontal dengan lambang negara berbeda di tiap sisi." },
+    { country: "Bolivia", code: "bo", hint: "Merah, kuning, hijau dengan lambang negara." },
+    { country: "Ekuador", code: "ec", hint: "Kuning, biru, merah dengan lambang burung condor." },
+    { country: "Venezuela", code: "ve", hint: "Tiga warna dengan lengkungan bintang putih di tengah." },
+    { country: "Kuba", code: "cu", hint: "Garis biru-putih dengan segitiga merah dan bintang putih." },
+    { country: "Kosta Rika", code: "cr", hint: "Biru, putih, merah, putih, biru dengan lambang tengah." },
+    { country: "Panama", code: "pa", hint: "Empat kotak dengan bintang biru dan merah." },
+    { country: "Dominika", code: "dm", hint: "Hijau dengan salib tiga warna dan burung sisserou." },
+    { country: "Barbados", code: "bb", hint: "Tiga vertikal biru-kuning-biru dengan lambang Trisula hitam." },
+    { country: "Jamaika", code: "jm", hint: "Salib diagonal berwarna kuning dengan segitiga hijau dan hitam." },
+    { country: "Nepal", code: "np", hint: "Satu-satunya negara dengan bendera bukan persegi panjang." },
+    { country: "Bhutan", code: "bt", hint: "Negara Himalaya dengan gambar naga putih." },
+    { country: "Sri Lanka", code: "lk", hint: "Bendera bergambar singa memegang pedang." },
+    { country: "Kamboja", code: "kh", hint: "Bendera bergambar bangunan Angkor Wat." },
+    { country: "Laos", code: "la", hint: "Bendera dengan lingkaran putih besar di tengah bidang merah-biru." },
+    { country: "Myanmar", code: "mm", hint: "Tiga garis horizontal kuning, hijau, merah dengan bintang besar." },
+    { country: "Brunei", code: "bn", hint: "Kuning dengan lambang bulan sabit merah melintang." },
+    { country: "Mongolia", code: "mn", hint: "Merah-biru-merah dengan simbol Soyombo di sisi kiri." },
+    { country: "Kazakhstan", code: "kz", hint: "Biru muda dengan lambang matahari dan pola tradisional kuning." },
+    { country: "Uzbekistan", code: "uz", hint: "Biru, putih, hijau dengan bulan sabit dan bintang." },
+    { country: "Madagaskar", code: "mg", hint: "Putih vertikal di kiri, merah dan hijau horizontal di kanan." },
+    { country: "Ghana", code: "gh", hint: "Merah, kuning, hijau dengan bintang hitam di tengah." },
+    { country: "Senegal", code: "sn", hint: "Hijau, kuning, merah dengan bintang hijau di tengah." },
+    { country: "Kamerun", code: "cm", hint: "Hijau, merah, kuning vertikal dengan bintang emas." },
+    { country: "Etiopia", code: "et", hint: "Hijau, kuning, merah horizontal dengan lambang bintang biru." },
+    { country: "Tunisia", code: "tn", hint: "Merah dengan lingkaran putih dan bulan sabit merah di tengah." },
+    { country: "Zimbabwe", code: "zw", hint: "Tujuh garis horizontal dengan burung Zimbabwe di segitiga putih." },
+    { country: "Uganda", code: "ug", hint: "Garis hitam-kuning-merah berulang dengan burung bangau." },
+    { country: "Mozambik", code: "mz", hint: "Bendera unik bergambar buku, cangkul, dan senjata serbu." },
+    { country: "Angola", code: "ao", hint: "Merah dan hitam dengan lambang roda gigi dan parang." },
+    { country: "Fiji", code: "fj", hint: "Biru muda dengan lambang Union Jack dan perisai." },
+    { country: "Papua Nugini", code: "pg", hint: "Merah-hitam diagonal dengan burung cendrawasih." },
+    { country: "Samoa", code: "ws", hint: "Merah dengan bidang biru di pojok berisi 5 bintang." },
+    { country: "Tonga", code: "to", hint: "Merah dengan kotak putih di pojok berisi salib merah." },
+    { country: "Mauritius", code: "mu", hint: "Empat warna horizontal: merah, biru, kuning, hijau." },
+    { country: "Seychelles", code: "sc", hint: "Pita warna-warni menyebar dari sudut kiri bawah." },
+    { country: "Maladewa", code: "mv", hint: "Merah berbingkai hijau dengan bulan sabit putih di tengah." },
+    { country: "Komoro", code: "km", hint: "Empat garis horizontal dengan segitiga hijau berisi bulan sabit." },
+    { country: "Djibouti", code: "dj", hint: "Biru dan hijau dengan segitiga putih dan bintang merah." },
+    { country: "Eritrea", code: "er", hint: "Segitiga merah besar dengan cabang zaitun emas." },
+    { country: "Siprus", code: "cy", hint: "Pulau Mediterania dengan siluet peta pulau warna tembaga." },
+    { country: "Montenegro", code: "me", hint: "Merah bertepi emas dengan lambang burung elang berkepala dua." },
+    { country: "Albania", code: "al", hint: "Merah pekat dengan elang hitam berkepala dua di tengah." },
+    { country: "Bosnia", code: "ba", hint: "Segitiga kuning besar dengan bintang putih di latar biru." },
+    { country: "Makedonia Utara", code: "mk", hint: "Matahari bersinar kuning di atas latar merah." },
+    { country: "Slovenia", code: "si", hint: "Putih, biru, merah dengan lambang gunung Triglav." },
+    { country: "Qatar", code: "qa", hint: "Marun dengan batas bergerigi putih di sisi kiri." },
+    { country: "Bahrain", code: "bh", hint: "Merah dan putih dengan sisi pembatas bergerigi." },
+    { country: "Oman", code: "om", hint: "Putih, merah, hijau dengan lambang pedang bersilang di pojok." },
+    { country: "Yaman", code: "ye", hint: "Tiga garis horizontal merah, putih, hitam." },
+    { country: "Yordania", code: "jo", hint: "Hitam, putih, hijau dengan segitiga merah dan bintang bersudut tujuh." },
+    { country: "Suriah", code: "sy", hint: "Merah, putih, hitam dengan dua bintang hijau di tengah." },
+    { country: "Irak", code: "iq", hint: "Merah, putih, hitam dengan tulisan Takbir hijau di tengah." },
+    { country: "Kuwait", code: "kw", hint: "Trapesium hitam di kiri dengan garis hijau, putih, merah." },
+    { country: "Lebanon", code: "lb", hint: "Garis merah atas-bawah dengan pohon Cedar hijau di tengah." }
 ];
 
 // State Game
@@ -133,6 +138,8 @@ let gameState = {
     soundEnabled: true,
     theme: 'dark',
     mode: 'classic',
+    shuffledDeck: [],
+    deckIndex: 0,
     stats: {
         totalPlayed: 0,
         totalAnswered: 0,
@@ -146,22 +153,14 @@ let gameState = {
         firstStep: false,
         worldTraveler: false,
         flagMaster: false,
-        perfect: false,
-        speedDemon: false,
         unstoppable: false
     }
 };
 
 let currentQuestion = null;
 let timerInterval = null;
-let timeLeft = 20;
-let levelCorrectCount = 0;
-let levelWrongCount = 0;
+let timeLeft = 12;
 
-// Pelacakan agar negara tidak berulang dalam satu sesi level/game
-let sessionUsedCountries = [];
-
-// Audio Context sederhana (Web Audio API)
 let audioCtx = null;
 function playSound(type) {
     if (!gameState.soundEnabled) return;
@@ -313,36 +312,22 @@ function initScreens() {
 
 function startGameMode(mode) {
     gameState.mode = mode;
-    if (mode === 'classic') {
-        if (gameState.level > 100) gameState.level = 1;
-    } else {
-        gameState.level = 1;
-        gameState.score = 0;
-        gameState.lives = mode === 'suddendath' ? 1 : 3;
-    }
+    gameState.level = 1;
+    gameState.score = 0;
+    gameState.lives = (mode === 'suddendath') ? 1 : 3;
     gameState.streak = 0;
     gameState.hints = 3;
-    sessionUsedCountries = []; // Reset memori bendera terpakai
+    gameState.deckIndex = 0;
+    
+    // Acak seluruh deck master secara permanen untuk SEMUA MODE di awal permainan
+    gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
+
     showScreen('game-screen');
     startLevel();
 }
 
 function startLevel() {
-    levelCorrectCount = 0;
-    levelWrongCount = 0;
     loadNewQuestion();
-}
-
-function getFilteredCountriesForLevel() {
-    let diff = 1;
-    if (gameState.level > 75) diff = 5;
-    else if (gameState.level > 50) diff = 4;
-    else if (gameState.level > 30) diff = 3;
-    else if (gameState.level > 10) diff = 2;
-
-    let filtered = COUNTRIES.filter(c => c.difficulty <= diff);
-    if (filtered.length < 4) filtered = COUNTRIES;
-    return filtered;
 }
 
 function loadNewQuestion() {
@@ -358,21 +343,16 @@ function loadNewQuestion() {
     let prog = ((gameState.level - 1) / 100) * 100;
     document.getElementById('progress-bar').style.width = `${prog}%`;
 
-    let pool = getFilteredCountriesForLevel();
-    
-    // Filter negara yang belum pernah muncul di sesi ini agar tidak bolak-balik muter di negara yang sama
-    let availablePool = pool.filter(c => !sessionUsedCountries.includes(c.country));
-    if (availablePool.length === 0) {
-        // Jika semua negara di tingkat ini sudah habis, reset memori khusus tingkat ini
-        sessionUsedCountries = [];
-        availablePool = pool;
+    // Ambil negara berdasarkan urutan deck index yang terus maju tanpa perulangan
+    if (!gameState.shuffledDeck || gameState.shuffledDeck.length === 0 || gameState.deckIndex >= gameState.shuffledDeck.length) {
+        gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
+        gameState.deckIndex = 0;
     }
 
-    // Pilih negara benar secara acak murni dari pool yang belum keluar
-    let correct = availablePool[Math.floor(Math.random() * availablePool.length)];
-    sessionUsedCountries.push(correct.country); // Tandai sudah keluar
+    let correct = gameState.shuffledDeck[gameState.deckIndex];
+    gameState.deckIndex++;
 
-    // Pilih 3 pilihan salah yang mengecoh dari total database (pastikan tidak sama dengan jawaban benar)
+    // Ambil 3 pilihan salah secara acak dari database
     let wrongPool = COUNTRIES.filter(c => c.country !== correct.country);
     let wrongOptions = [];
     while(wrongOptions.length < 3) {
@@ -383,7 +363,6 @@ function loadNewQuestion() {
     }
 
     let options = [correct, ...wrongOptions];
-    // Acak posisi pilihan jawaban
     options.sort(() => Math.random() - 0.5);
 
     currentQuestion = {
@@ -399,7 +378,7 @@ function loadNewQuestion() {
     let flagUrl = `https://flagcdn.com/w640/${correct.code.toLowerCase()}.png`;
     imgEl.onload = () => { loaderEl.style.display = 'none'; };
     imgEl.onerror = () => { 
-        loaderEl.innerText = "Gagal memuat bendera, mencoba sumber 2...";
+        loaderEl.innerText = "Memuat...";
         imgEl.src = `https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/${correct.code.toLowerCase()}.svg`;
     };
     imgEl.src = flagUrl;
@@ -414,12 +393,7 @@ function loadNewQuestion() {
         optContainer.appendChild(btn);
     });
 
-    // Waktu dibuat lebih ketat & menantang (15 detik, 12 detik, hingga 8 detik)
-    let timeLimit = 15;
-    if (gameState.level > 50) timeLimit = 8;
-    else if (gameState.level > 20) timeLimit = 12;
-
-    startTimer(timeLimit);
+    startTimer(12);
 }
 
 function startTimer(seconds) {
@@ -444,9 +418,10 @@ function startTimer(seconds) {
 
 function timeOutAnswer() {
     playSound('wrong');
-    levelWrongCount++;
     gameState.streak = 0;
     gameState.lives--;
+    gameState.stats.totalAnswered++;
+    gameState.stats.wrong++;
     
     highlightCorrectAnswer();
     setTimeout(() => {
@@ -466,12 +441,11 @@ function selectAnswer(selectedCountry, btnElement) {
     if (isCorrect) {
         playSound('correct');
         btnElement.classList.add('correct');
-        levelCorrectCount++;
         gameState.streak++;
         if (gameState.streak > gameState.bestStreak) gameState.bestStreak = gameState.streak;
 
-        let speedBonus = Math.ceil(timeLeft * 6);
-        let comboBonus = gameState.streak >= 10 ? 350 : (gameState.streak >= 5 ? 220 : (gameState.streak >= 3 ? 150 : 100));
+        let speedBonus = Math.ceil(timeLeft * 8);
+        let comboBonus = gameState.streak >= 5 ? 200 : 100;
         gameState.score += comboBonus + speedBonus;
 
         gameState.stats.correct++;
@@ -482,12 +456,15 @@ function selectAnswer(selectedCountry, btnElement) {
         checkAchievements();
 
         setTimeout(() => {
-            finishLevelOrNext();
-        }, 1000);
+            if (gameState.mode === 'classic') {
+                showLevelResult();
+            } else {
+                nextLevelProgression();
+            }
+        }, 800);
     } else {
         playSound('wrong');
         btnElement.classList.add('wrong');
-        levelWrongCount++;
         gameState.streak = 0;
         gameState.lives--;
         gameState.score = Math.max(0, gameState.score - 30);
@@ -514,28 +491,16 @@ function checkGameStatusAfterAnswer() {
     if (gameState.lives <= 0 || gameState.mode === 'suddendath') {
         triggerGameOver();
     } else {
-        finishLevelOrNext();
-    }
-}
-
-function finishLevelOrNext() {
-    if (levelCorrectCount + levelWrongCount >= 5 || gameState.mode !== 'classic') {
-        if (gameState.mode === 'classic') {
-            showLevelResult();
-        } else {
-            loadNewQuestion();
-        }
-    } else {
-        loadNewQuestion();
+        nextLevelProgression();
     }
 }
 
 function showLevelResult() {
-    let accuracy = Math.round((levelCorrectCount / (levelCorrectCount + levelWrongCount || 1)) * 100);
+    let accuracy = Math.round((gameState.stats.correct / (gameState.stats.totalAnswered || 1)) * 100);
     document.getElementById('res-score').innerText = `+${gameState.score}`;
     document.getElementById('res-streak').innerText = gameState.streak;
-    document.getElementById('res-correct').innerText = levelCorrectCount;
-    document.getElementById('res-wrong').innerText = levelWrongCount;
+    document.getElementById('res-correct').innerText = gameState.stats.correct;
+    document.getElementById('res-wrong').innerText = gameState.stats.wrong;
     document.getElementById('res-accuracy').innerText = `${accuracy}%`;
 
     if (gameState.score > gameState.stats.highestScore) gameState.stats.highestScore = gameState.score;
@@ -549,7 +514,17 @@ function showLevelResult() {
 function nextLevel() {
     gameState.level++;
     if (gameState.level > 100) {
-        alert("SELAMAT! Kamu telah menamatkan 100 level Tebak Bendera!");
+        alert("LUAR BIASA! Kamu telah menamatkan seluruh 100 level Tebak Bendera dunia!");
+        gameState.level = 1;
+    }
+    showScreen('game-screen');
+    startLevel();
+}
+
+function nextLevelProgression() {
+    gameState.level++;
+    if (gameState.level > 100 && gameState.mode === 'classic') {
+        alert("LUAR BIASA! Kamu telah menamatkan seluruh 100 level Tebak Bendera dunia!");
         gameState.level = 1;
     }
     showScreen('game-screen');
@@ -590,7 +565,7 @@ function checkAchievements() {
     if (gameState.stats.countriesGuessed.length >= 25 && !gameState.achievements.worldTraveler) {
         gameState.achievements.worldTraveler = true;
     }
-    if (gameState.stats.countriesGuessed.length >= 100 && !gameState.achievements.flagMaster) {
+    if (gameState.stats.countriesGuessed.length >= 50 && !gameState.achievements.flagMaster) {
         gameState.achievements.flagMaster = true;
     }
     if (gameState.streak >= 10 && !gameState.achievements.unstoppable) {
@@ -629,7 +604,7 @@ function renderStats() {
     achList.innerHTML = `
         <div class="ach-item"><span>🏆 First Step</span> <b>${gameState.achievements.firstStep ? '✅' : '🔒'}</b></div>
         <div class="ach-item"><span>🏆 World Traveler (25 Negara)</span> <b>${gameState.achievements.worldTraveler ? '✅' : '🔒'}</b></div>
-        <div class="ach-item"><span>🏆 Flag Master (100 Negara)</span> <b>${gameState.achievements.flagMaster ? '✅' : '🔒'}</b></div>
+        <div class="ach-item"><span>🏆 Flag Master (50 Negara)</span> <b>${gameState.achievements.flagMaster ? '✅' : '🔒'}</b></div>
         <div class="ach-item"><span>🏆 Unstoppable (Streak 10)</span> <b>${gameState.achievements.unstoppable ? '✅' : '🔒'}</b></div>
     `;
 }
