@@ -129,7 +129,6 @@ const COUNTRIES = [
 const COUNTRIES_PER_LEVEL = 5;
 const TOTAL_LEVELS = Math.ceil(COUNTRIES.length / COUNTRIES_PER_LEVEL);
 
-// State Game
 let gameState = {
     score: 0,
     level: 1,
@@ -217,7 +216,7 @@ window.addEventListener('DOMContentLoaded', () => {
     loadGameData();
     applyTheme();
     initScreens();
-    injectPassAndPlayModal(); // <-- INI YANG SEBELUMNYA KURANG DIPANGGIL OTOMATIS
+    injectPassAndPlayModal();
 
     setTimeout(() => {
         hideScreen('loading-screen');
@@ -404,7 +403,7 @@ function loadNewQuestion() {
         document.getElementById('progress-bar').style.width = `${prog}%`;
     } else if (gameState.mode === 'timeattack') {
         document.getElementById('current-level').innerText = `⏱️ TIME ATTACK`;
-    } else if (gameState.mode === 'passandplay') {
+    } else if (gameState.mode === 'passplay') {
         document.getElementById('current-level').innerText = `👥 Giliran Pemain ${gameState.passAndPlayPlayer}`;
     } else {
         document.getElementById('current-level').innerText = `SUDDEN DEATH`;
@@ -520,8 +519,8 @@ function timeOutAnswer() {
     
     highlightCorrectAnswer();
     setTimeout(() => {
-        if (gameState.mode === 'passandplay') {
-            triggerPassAndPlayTransition();
+        if (gameState.mode === 'passplay') {
+            triggerPassAndPlayTransition(false);
         } else {
             checkGameStatusAfterAnswer();
         }
@@ -561,7 +560,7 @@ function selectAnswer(selectedCountry, btnElement) {
         setTimeout(() => {
             if (gameState.mode === 'classic') {
                 handleClassicProgression();
-            } else if (gameState.mode === 'passandplay') {
+            } else if (gameState.mode === 'passplay') {
                 triggerPassAndPlayTransition(true);
             } else {
                 loadNewQuestion();
@@ -586,7 +585,7 @@ function selectAnswer(selectedCountry, btnElement) {
         highlightCorrectAnswer();
 
         setTimeout(() => {
-            if (gameState.mode === 'passandplay') {
+            if (gameState.mode === 'passplay') {
                 triggerPassAndPlayTransition(false);
             } else {
                 checkGameStatusAfterAnswer();
