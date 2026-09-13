@@ -145,8 +145,9 @@ let gameState = {
     deckIndex: 0,
     currentLevelCountries: [],
     levelQuestionIndex: 0,
-    timeAttackSeconds: 45, // Default awal
-    customTimeAttackDuration: 45, // Durasi pilihan user (bisa diubah: 10, 20, 60, 120, dll)
+    timeAttackSeconds: 45,
+    customTimeAttackDuration: 45,
+    passAndPlayPlayer: 1, // Melacak giliran pemain (Pemain 1 atau Pemain 2)
     stats: {
         totalPlayed: 0,
         totalAnswered: 0,
@@ -216,12 +217,35 @@ window.addEventListener('DOMContentLoaded', () => {
     loadGameData();
     applyTheme();
     initScreens();
+    injectPassAndPlayModal(); // Menyisipkan elemen tampilan oper HP secara dinamis
 
     setTimeout(() => {
         hideScreen('loading-screen');
         showScreen('menu-screen');
     }, 1000);
 });
+
+// Membuat elemen HTML pop-up oper HP secara otomatis lewat JS agar Anda tidak perlu repot ubah index.html
+function injectPassAndPlayModal() {
+    if (document.getElementById('pass-play-modal')) return;
+    const modalDiv = document.createElement('div');
+    modalDiv.id = 'pass-play-modal';
+    modalDiv.className = 'screen';
+    modalDiv.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(15, 23, 42, 0.95); z-index: 9999;
+        display: none; flex-direction: column; justify-content: center; align-items: center;
+        text-align: center; padding: 20px; color: #fff;
+    `;
+    modalDiv.innerHTML = `
+        <div style="background: #1e293b; padding: 30px; border-radius: 16px; max-width: 400px; width: 100%; border: 2px solid #3b82f6; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+            <h2 id="pass-title" style="color: #f59e0b; margin-bottom: 15px; font-size: 24px;">Giliran Berakhir!</h2>
+            <p id="pass-desc" style="font-size: 16px; margin-bottom: 25px; color: #cbd5e1;">Ops, jawabanmu kurang tepat atau waktu habis!</p>
+            <button id="btn-pass-action" style="background: #3b82f6; color: white; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);">Berikan ke Temanmu / Orang Selanjutnya</button>
+        </div>
+    `;
+    document.body.appendChild(modalDiv);
+}
 
 function loadGameData() {
     const saved = localStorage.getItem('tebak_bendera_state');
@@ -285,7 +309,6 @@ function initScreens() {
             const mode = card.getAttribute('data-mode');
             
             if (mode === 'timeattack') {
-                // Munculkan pilihan durasi waktu sebelum memulai time attack
                 let pilihan = prompt("Pilih durasi waktu Time Attack (dalam detik):\nContoh: 10, 20, 45, 60, 120", gameState.customTimeAttackDuration || 45);
                 if (pilihan !== null) {
                     let parsed = parseInt(pilihan);
@@ -293,7 +316,7 @@ function initScreens() {
                         gameState.customTimeAttackDuration = parsed;
                     }
                 } else {
-                    return; // Batal jika user klik cancel
+                    return;
                 }
             }
             
@@ -340,9 +363,10 @@ function startGameMode(mode) {
     gameState.hints = 3;
     gameState.deckIndex = 0;
     gameState.levelQuestionIndex = 0;
+    gameState.passAndPlayPlayer = 1;
     
     if (mode === 'timeattack') {
-        gameState.timeAttackSeconds = gameState.customTimeAttackDuration; // Menggunakan durasi pilihan user
+        gameState.timeAttackSeconds = gameState.customTimeAttackDuration;
     } else {
         gameState.timeAttackSeconds = 45;
     }
@@ -381,6 +405,8 @@ function loadNewQuestion() {
         document.getElementById('progress-bar').style.width = `${prog}%`;
     } else if (gameState.mode === 'timeattack') {
         document.getElementById('current-level').innerText = `⏱️ TIME ATTACK`;
+    } else if (gameState.mode === 'passandplay') {
+        document.getElementById('current-level').innerText = `👥 Giliran Pemain ${gameState.passAndPlayPlayer}`;
     } else {
         document.getElementById('current-level').innerText = `SUDDEN DEATH`;
     }
@@ -495,7 +521,11 @@ function timeOutAnswer() {
     
     highlightCorrectAnswer();
     setTimeout(() => {
-        checkGameStatusAfterAnswer();
+        if (gameState.mode === 'passandplay') {
+            triggerPassAndPlayTransition();
+        } else {
+            checkGameStatusAfterAnswer();
+        }
     }, 1200);
 }
 
@@ -519,7 +549,7 @@ function selectAnswer(selectedCountry, btnElement) {
         gameState.score += comboBonus + speedBonus;
 
         if (gameState.mode === 'timeattack') {
-            gameState.timeAttackSeconds += 3; // Tambah 3 detik saat benar
+            gameState.timeAttackSeconds += 3;
         }
 
         gameState.stats.correct++;
@@ -532,6 +562,9 @@ function selectAnswer(selectedCountry, btnElement) {
         setTimeout(() => {
             if (gameState.mode === 'classic') {
                 handleClassicProgression();
+            } else if (gameState.mode === 'passandplay') {
+                // Di Pass and Play, kalau benar pemain boleh lanjut atau dioper juga? Kita beri opsi oper juga biar adil bergantian giliran
+                triggerPassAndPlayTransition(true);
             } else {
                 loadNewQuestion();
             }
@@ -545,7 +578,7 @@ function selectAnswer(selectedCountry, btnElement) {
         gameState.stats.wrong++;
 
         if (gameState.mode === 'timeattack') {
-            gameState.timeAttackSeconds -= 4; // Kurangi 4 detik saat salah
+            gameState.timeAttackSeconds -= 4;
             if (gameState.timeAttackSeconds <= 0) {
                 triggerGameOver();
                 return;
@@ -555,9 +588,46 @@ function selectAnswer(selectedCountry, btnElement) {
         highlightCorrectAnswer();
 
         setTimeout(() => {
-            checkGameStatusAfterAnswer();
+            if (gameState.mode === 'passandplay') {
+                triggerPassAndPlayTransition(false);
+            } else {
+                checkGameStatusAfterAnswer();
+            }
         }, 1200);
     }
+}
+
+// Fungsi khusus untuk menampilkan layar transisi oper HP di mode Pass and Play
+function triggerPassAndPlayTransition(wasCorrect = false) {
+    const modal = document.getElementById('pass-play-modal');
+    const titleEl = document.getElementById('pass-title');
+    const descEl = document.getElementById('pass-desc');
+    const btnEl = document.getElementById('btn-pass-action');
+
+    let nextPlayer = gameState.passAndPlayPlayer === 1 ? 2 : 1;
+
+    if (wasCorrect) {
+        titleEl.innerText = `Hebat! Pemain ${gameState.passAndPlayPlayer} Benar! 🎉`;
+        descEl.innerText = `Silakan berikan HP ke Pemain ${nextPlayer} untuk melanjutkan giliran berikutnya.`;
+    } else {
+        titleEl.innerText = `Sayang sekali, salah! ❌`;
+        descEl.innerText = `Berikan ke Temanmu / Orang Selanjutnya (Pemain ${nextPlayer}).`;
+    }
+
+    modal.style.display = 'flex';
+
+    // Tombol untuk lanjut setelah HP dioper
+    btnEl.onclick = () => {
+        playSound('click');
+        modal.style.display = 'none';
+        gameState.passAndPlayPlayer = nextPlayer; // Tukar giliran pemain
+
+        if (gameState.lives <= 0) {
+            triggerGameOver();
+        } else {
+            loadNewQuestion();
+        }
+    };
 }
 
 function highlightCorrectAnswer() {
