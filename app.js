@@ -147,7 +147,7 @@ let gameState = {
     levelQuestionIndex: 0,
     timeAttackSeconds: 45,
     customTimeAttackDuration: 45,
-    passAndPlayPlayer: 1, // Melacak giliran pemain (Pemain 1 atau Pemain 2)
+    passAndPlayPlayer: 1,
     stats: {
         totalPlayed: 0,
         totalAnswered: 0,
@@ -217,7 +217,7 @@ window.addEventListener('DOMContentLoaded', () => {
     loadGameData();
     applyTheme();
     initScreens();
-    injectPassAndPlayModal(); // Menyisipkan elemen tampilan oper HP secara dinamis
+    injectPassAndPlayModal(); // <-- INI YANG SEBELUMNYA KURANG DIPANGGIL OTOMATIS
 
     setTimeout(() => {
         hideScreen('loading-screen');
@@ -225,7 +225,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 1000);
 });
 
-// Membuat elemen HTML pop-up oper HP secara otomatis lewat JS agar Anda tidak perlu repot ubah index.html
 function injectPassAndPlayModal() {
     if (document.getElementById('pass-play-modal')) return;
     const modalDiv = document.createElement('div');
@@ -563,7 +562,6 @@ function selectAnswer(selectedCountry, btnElement) {
             if (gameState.mode === 'classic') {
                 handleClassicProgression();
             } else if (gameState.mode === 'passandplay') {
-                // Di Pass and Play, kalau benar pemain boleh lanjut atau dioper juga? Kita beri opsi oper juga biar adil bergantian giliran
                 triggerPassAndPlayTransition(true);
             } else {
                 loadNewQuestion();
@@ -597,7 +595,6 @@ function selectAnswer(selectedCountry, btnElement) {
     }
 }
 
-// Fungsi khusus untuk menampilkan layar transisi oper HP di mode Pass and Play
 function triggerPassAndPlayTransition(wasCorrect = false) {
     const modal = document.getElementById('pass-play-modal');
     const titleEl = document.getElementById('pass-title');
@@ -616,11 +613,10 @@ function triggerPassAndPlayTransition(wasCorrect = false) {
 
     modal.style.display = 'flex';
 
-    // Tombol untuk lanjut setelah HP dioper
     btnEl.onclick = () => {
         playSound('click');
         modal.style.display = 'none';
-        gameState.passAndPlayPlayer = nextPlayer; // Tukar giliran pemain
+        gameState.passAndPlayPlayer = nextPlayer;
 
         if (gameState.lives <= 0) {
             triggerGameOver();
