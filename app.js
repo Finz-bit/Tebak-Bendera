@@ -1,6 +1,6 @@
-// Database Negara Lengkap (100+ negara dengan tingkat kesulitan)
+// Database Negara Diperluas (Hampir 200+ Negara & Wilayah di Dunia)
 const COUNTRIES = [
-    // Level 1-10 (Sangat Mudah)
+    // Level 1-10 (Sangat Mudah / Negara Populer)
     { country: "Indonesia", code: "id", hint: "Negara kepulauan terbesar di Asia Tenggara.", difficulty: 1 },
     { country: "Jepang", code: "jp", hint: "Negara Matahari Terbit di Asia Timur.", difficulty: 1 },
     { country: "Amerika Serikat", code: "us", hint: "Negara Paman Sam dengan bendera bintang-garis.", difficulty: 1 },
@@ -11,15 +11,15 @@ const COUNTRIES = [
     { country: "Italia", code: "it", hint: "Negara berbentuk sepatu boot.", difficulty: 1 },
     { country: "Australia", code: "au", hint: "Negara benua sekaligus pulau di selatan.", difficulty: 1 },
     { country: "Brasil", code: "br", hint: "Negara sepak bola terkenal di Amerika Selatan.", difficulty: 1 },
+    { country: "Korea Selatan", code: "kr", hint: "Negara ginseng dengan lambang Taeguk di tengah.", difficulty: 1 },
+    { country: "Spanyol", code: "es", hint: "Negara matador di Semenanjung Iberia.", difficulty: 1 },
+    { country: "Belanda", code: "nl", hint: "Negara kincir angin dan tulip.", difficulty: 1 },
+    { country: "India", code: "in", hint: "Negara Asia Selatan dengan roda Ashok Chakra di tengah.", difficulty: 1 },
+    { country: "Tiongkok", code: "cn", hint: "Negara berbendera merah dengan lima bintang kuning.", difficulty: 1 },
 
     // Level 11-30 (Mudah - Menengah)
-    { country: "Korea Selatan", code: "kr", hint: "Negara ginseng dengan lambang Taeguk di tengah.", difficulty: 2 },
     { country: "Argentina", code: "ar", hint: "Negara penghasil daging sapi dengan matahari di bendera.", difficulty: 2 },
     { country: "Meksiko", code: "mx", hint: "Negara Amerika Utara dengan lambang burung elang dan ular.", difficulty: 2 },
-    { country: "Spanyol", code: "es", hint: "Negara matador di Semenanjung Iberia.", difficulty: 2 },
-    { country: "Belanda", code: "nl", hint: "Negara kincir angin dan tulip.", difficulty: 2 },
-    { country: "India", code: "in", hint: "Negara Asia Selatan dengan roda Ashok Chakra di tengah.", difficulty: 2 },
-    { country: "Tiongkok", code: "cn", hint: "Negara berbendera merah dengan lima bintang kuning.", difficulty: 2 },
     { country: "Rusia", code: "ru", hint: "Negara terluas di dunia dengan tiga warna horizontal.", difficulty: 2 },
     { country: "Arab Saudi", code: "sa", hint: "Negara Hijau dengan tulisan kaligrafi syahadat.", difficulty: 2 },
     { country: "Afrika Selatan", code: "za", hint: "Negara ujung benua Afrika dengan bendera warna-warni.", difficulty: 2 },
@@ -33,13 +33,13 @@ const COUNTRIES = [
     { country: "Swedia", code: "se", hint: "Negara Skandinavia dengan salib kuning di atas biru.", difficulty: 2 },
     { country: "Norwegia", code: "no", hint: "Negara Nordik dengan salib merah bergaris putih.", difficulty: 2 },
     { country: "Portugal", code: "pt", hint: "Negara asal Cristiano Ronaldo di Semenanjung Iberia.", difficulty: 2 },
+    { country: "Selandia Baru", code: "nz", hint: "Negara Pasifik dengan lambang Salib Selatan.", difficulty: 2 },
+    { country: "Mesir", code: "eg", hint: "Negara piramida dengan lambang Elang Saladin.", difficulty: 2 },
+    { country: "Yunani", code: "gr", hint: "Negara asal mitologi kuno dengan garis biru-putih.", difficulty: 2 },
+    { country: "Polandia", code: "pl", hint: "Negara Eropa Tengah dengan warna putih di atas merah.", difficulty: 2 },
+    { country: "Ukraina", code: "ua", hint: "Negara dengan kombinasi warna biru langit dan kuning ladang gandum.", difficulty: 2 },
 
     // Level 31-50 (Menengah)
-    { country: "Selandia Baru", code: "nz", hint: "Negara Pasifik dengan lambang Salib Selatan.", difficulty: 3 },
-    { country: "Mesir", code: "eg", hint: "Negara piramida dengan lambang Elang Saladin.", difficulty: 3 },
-    { country: "Yunani", code: "gr", hint: "Negara asal mitologi kuno dengan garis biru-putih.", difficulty: 3 },
-    { country: "Polandia", code: "pl", hint: "Negara Eropa Tengah dengan warna putih di atas merah.", difficulty: 3 },
-    { country: "Ukraina", code: "ua", hint: "Negara dengan kombinasi warna biru langit dan kuning ladang gandum.", difficulty: 3 },
     { country: "Belgia", code: "be", hint: "Negara cokelat dengan tiga garis vertikal hitam-kuning-merah.", difficulty: 3 },
     { country: "Austria", code: "at", hint: "Negara Alpen dengan garis merah-putih-merah.", difficulty: 3 },
     { country: "Denmark", code: "dk", hint: "Negara Skandinavia pencipta Lego.", difficulty: 3 },
@@ -55,35 +55,40 @@ const COUNTRIES = [
     { country: "Pakistan", code: "pk", hint: "Negara Asia Selatan dengan bidang putih besar di sisi kiri.", difficulty: 3 },
     { country: "Bangladesh", code: "bd", hint: "Negara dengan lingkaran merah menyala di atas latar hijau.", difficulty: 3 },
     { country: "Iran", code: "ir", hint: "Negara Timur Tengah dengan lambang khusus di tengah.", difficulty: 3 },
+    { country: "Kroasia", code: "hr", hint: "Negara pecahan Yugoslavia dengan lambang papan catur merah-putih.", difficulty: 3 },
+    { country: "Ceko", code: "cz", hint: "Negara Eropa Tengah dengan segitiga biru di sisi kiri.", difficulty: 3 },
+    { country: "Hungaria", code: "hu", hint: "Tiga garis horizontal merah, putih, hijau.", difficulty: 3 },
+    { country: "Rumania", code: "ro", hint: "Tiga garis vertikal biru, kuning, merah.", difficulty: 3 },
+    { country: "Bulgaria", code: "bg", hint: "Tiga garis horizontal putih, hijau, merah.", difficulty: 3 },
 
     // Level 51-75 (Sulit)
-    { country: "Kolombia", code: "co", hint: "Negara Amerika Selatan.", difficulty: 4 },
-    { country: "Kroasia", code: "hr", hint: "Negara pecahan Yugoslavia dengan lambang papan catur merah-putih.", difficulty: 4 },
-    { country: "Ceko", code: "cz", hint: "Negara Eropa Tengah dengan segitiga biru di sisi kiri.", difficulty: 4 },
-    { country: "Hungaria", code: "hu", hint: "Tiga garis horizontal merah, putih, hijau.", difficulty: 4 },
-    { country: "Rumania", code: "ro", hint: "Tiga garis vertikal biru, kuning, merah.", difficulty: 4 },
-    { country: "Bulgaria", code: "bg", hint: "Tiga garis horizontal putih, hijau, merah.", difficulty: 4 },
     { country: "Serbia", code: "rs", hint: "Negara Eropa timur dengan lambang kerajaan kecil.", difficulty: 4 },
-    { country: "Slowakia", code: "sk", hint: "Mirip Slovenia/Rusia tapi memiliki lambang perisai ganda.", difficulty: 4 },
+    { country: "Slowakia", code: "sk", hint: "Memiliki lambang perisai ganda di atas tiga warna.", difficulty: 4 },
     { country: "Lituania", code: "lt", hint: "Kuning, hijau, merah secara horizontal.", difficulty: 4 },
-    { country: "Latvia", code: "lv", hint: "Merah marun dengan garis putih di tengah.", difficulty: 4 },
+    { country: "Latvia", code: "lv", hint: "Merah marun dengan garis putih tipis di tengah.", difficulty: 4 },
     { country: "Estonia", code: "ee", hint: "Biru, hitam, putih secara horizontal.", difficulty: 4 },
     { country: "Islandia", code: "is", hint: "Kebalikan dari bendera Norwegia (salib putih berbingkai merah).", difficulty: 4 },
     { country: "Luksemburg", code: "lu", hint: "Merah, putih, biru muda secara horizontal.", difficulty: 4 },
-    { country: "Monako", code: "mc", hint: "Merah di atas, putih di bawah.", difficulty: 4 },
+    { country: "Monako", code: "mc", hint: "Merah di atas, putih di bawah (mirip Polandia terbalik).", difficulty: 4 },
     { country: "Vatikan", code: "va", hint: "Kuning dan putih dengan lambang kunci silang.", difficulty: 4 },
     { country: "San Marino", code: "sm", hint: "Putih dan biru muda dengan lambang menara tiga.", difficulty: 4 },
     { country: "Malta", code: "mt", hint: "Putih-merah dengan salib George kecil di pojok.", difficulty: 4 },
     { country: "Andorra", code: "ad", hint: "Tiga garis vertikal biru, kuning, merah dengan lambang tengah.", difficulty: 4 },
     { country: "Liechtenstein", code: "li", hint: "Biru di atas, merah di bawah dengan mahkota kecil.", difficulty: 4 },
-    { country: "Uruguay", code: "uy", hint: "Garis biru-putih dengan matahari di pojok.", difficulty: 4 },
-    { country: "Paraguay", code: "py", hint: "Tiga warna horizontal dengan lambang negara di tengah.", difficulty: 4 },
+    { country: "Uruguay", code: "uy", hint: "Garis biru-putih dengan matahari tersenyum di pojok.", difficulty: 4 },
+    { country: "Paraguay", code: "py", hint: "Tiga warna horizontal dengan lambang negara berbeda di tiap sisi.", difficulty: 4 },
     { country: "Bolivia", code: "bo", hint: "Merah, kuning, hijau dengan lambang negara.", difficulty: 4 },
     { country: "Ekuador", code: "ec", hint: "Kuning, biru, merah dengan lambang burung condor.", difficulty: 4 },
     { country: "Venezuela", code: "ve", hint: "Tiga warna dengan lengkungan bintang putih di tengah.", difficulty: 4 },
     { country: "Kuba", code: "cu", hint: "Garis biru-putih dengan segitiga merah dan bintang putih.", difficulty: 4 },
+    { country: "Kosta Rika", code: "cr", hint: "Biru, putih, merah, putih, biru dengan lambang tengah.", difficulty: 4 },
+    { country: "Panama", code: "pa", hint: "Empat kotak dengan bintang biru dan merah.", difficulty: 4 },
+    { country: "Uruguay", code: "uy", hint: "Garis biru-putih dengan matahari.", difficulty: 4 },
+    { country: "Dominika", code: "dm", hint: "Hijau dengan salib salib tiga warna dan burung sisserou.", difficulty: 4 },
+    { country: "Barbados", code: "bb", hint: "Tiga vertikal biru-kuning-biru dengan lambang Trisula hitam.", difficulty: 4 },
+    { country: "Jamaika", code: "jm", hint: "Salib diagonal berwarna kuning dengan segitiga hijau dan hitam.", difficulty: 4 },
 
-    // Level 76-100 (Sangat Sulit / Negara Kecil & Unik)
+    // Level 76-100 (Sangat Sulit / Negara Kecil, Afrika, & Kepulauan Unik)
     { country: "Nepal", code: "np", hint: "Satu-satunya negara dengan bendera bukan persegi panjang.", difficulty: 5 },
     { country: "Bhutan", code: "bt", hint: "Negara Himalaya dengan gambar naga putih.", difficulty: 5 },
     { country: "Sri Lanka", code: "lk", hint: "Bendera bergambar singa memegang pedang.", difficulty: 5 },
@@ -108,7 +113,12 @@ const COUNTRIES = [
     { country: "Papua Nugini", code: "pg", hint: "Merah-hitam diagonal dengan burung cendrawasih.", difficulty: 5 },
     { country: "Samoa", code: "ws", hint: "Merah dengan bidang biru di pojok berisi 5 bintang.", difficulty: 5 },
     { country: "Tonga", code: "to", hint: "Merah dengan kotak putih di pojok berisi salib merah.", difficulty: 5 },
-    { country: "Mauritius", code: "mu", hint: "Empat warna horizontal: merah, biru, kuning, hijau.", difficulty: 5 }
+    { country: "Mauritius", code: "mu", hint: "Empat warna horizontal: merah, biru, kuning, hijau.", difficulty: 5 },
+    { country: "Seychelles", code: "sc", hint: "Pita warna-warni menyebar dari sudut kiri bawah.", difficulty: 5 },
+    { country: "Maladewa", code: "mv", hint: "Merah berbingkai hijau dengan bulan sabit putih di tengah.", difficulty: 5 },
+    { country: "Komoro", code: "km", hint: "Empat garis horizontal dengan segitiga hijau berisi bulan sabit.", difficulty: 5 },
+    { country: "Djibouti", code: "dj", hint: "Biru dan hijau dengan segitiga putih dan bintang merah.", difficulty: 5 },
+    { country: "Eritrea", code: "er", hint: "Segitiga merah besar dengan cabang zaitun emas.", difficulty: 5 }
 ];
 
 // State Game
@@ -147,7 +157,9 @@ let timerInterval = null;
 let timeLeft = 20;
 let levelCorrectCount = 0;
 let levelWrongCount = 0;
-let levelStartTime = 0;
+
+// Pelacakan agar negara tidak berulang dalam satu sesi level/game
+let sessionUsedCountries = [];
 
 // Audio Context sederhana (Web Audio API)
 let audioCtx = null;
@@ -168,8 +180,8 @@ function playSound(type) {
             osc.start(now);
             osc.stop(now + 0.05);
         } else if (type === 'correct') {
-            osc.frequency.setValueAtTime(587.33, now); // D5
-            osc.frequency.setValueAtTime(880, now + 0.08); // A5
+            osc.frequency.setValueAtTime(587.33, now);
+            osc.frequency.setValueAtTime(880, now + 0.08);
             gain.gain.setValueAtTime(0.1, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
             osc.start(now);
@@ -194,13 +206,11 @@ function playSound(type) {
     }
 }
 
-// Inisialisasi LocalStorage & Event
 window.addEventListener('DOMContentLoaded', () => {
     loadGameData();
     applyTheme();
     initScreens();
 
-    // Sembunyikan loading screen setelah 1 detik
     setTimeout(() => {
         hideScreen('loading-screen');
         showScreen('menu-screen');
@@ -241,7 +251,6 @@ function applyTheme() {
     document.getElementById('sound-toggle').checked = gameState.soundEnabled;
 }
 
-// Navigasi Screen
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
@@ -252,40 +261,34 @@ function hideScreen(screenId) {
 }
 
 function initScreens() {
-    // Tombol Menu Utama
     document.getElementById('btn-play').addEventListener('click', () => { playSound('click'); showScreen('mode-screen'); });
     document.getElementById('btn-leaderboard').addEventListener('click', () => { playSound('click'); renderLeaderboard(); showScreen('leaderboard-screen'); });
     document.getElementById('btn-stats').addEventListener('click', () => { playSound('click'); renderStats(); showScreen('stats-screen'); });
     document.getElementById('btn-settings').addEventListener('click', () => { playSound('click'); showScreen('settings-screen'); });
     document.getElementById('btn-help').addEventListener('click', () => { playSound('click'); showScreen('help-screen'); });
 
-    // Tombol Kembali
     document.getElementById('back-to-menu-from-mode').addEventListener('click', () => { playSound('click'); showScreen('menu-screen'); });
     document.getElementById('back-to-menu-from-lb').addEventListener('click', () => { playSound('click'); showScreen('menu-screen'); });
     document.getElementById('back-to-menu-from-stats').addEventListener('click', () => { playSound('click'); showScreen('menu-screen'); });
     document.getElementById('back-to-menu-from-settings').addEventListener('click', () => { playSound('click'); showScreen('menu-screen'); });
     document.getElementById('back-to-menu-from-help').addEventListener('click', () => { playSound('click'); showScreen('menu-screen'); });
 
-    // Mode Cards
     document.querySelectorAll('.mode-card').forEach(card => {
-        card.addEventListener('click', (e) => {
+        card.addEventListener('click', () => {
             playSound('click');
             const mode = card.getAttribute('data-mode');
             startGameMode(mode);
         });
     });
 
-    // Tombol Game Result / Over
     document.getElementById('btn-home').addEventListener('click', () => { playSound('click'); showScreen('menu-screen'); });
     document.getElementById('btn-go-home').addEventListener('click', () => { playSound('click'); showScreen('menu-screen'); });
     document.getElementById('btn-next-level').addEventListener('click', () => { playSound('click'); nextLevel(); });
     document.getElementById('btn-retry-level').addEventListener('click', () => { playSound('click'); startLevel(); });
     document.getElementById('btn-try-again').addEventListener('click', () => { playSound('click'); resetGameProgress(); showScreen('menu-screen'); });
 
-    // Hint Button
     document.getElementById('btn-hint').addEventListener('click', () => { playSound('click'); useHint(); });
 
-    // Settings Handler
     document.getElementById('theme-select').addEventListener('change', (e) => {
         gameState.theme = e.target.value;
         applyTheme();
@@ -308,11 +311,9 @@ function initScreens() {
     });
 }
 
-// Logika Game & Level
 function startGameMode(mode) {
     gameState.mode = mode;
     if (mode === 'classic') {
-        // Lanjutkan dari level terakhir atau reset jika tamat
         if (gameState.level > 100) gameState.level = 1;
     } else {
         gameState.level = 1;
@@ -321,6 +322,7 @@ function startGameMode(mode) {
     }
     gameState.streak = 0;
     gameState.hints = 3;
+    sessionUsedCountries = []; // Reset memori bendera terpakai
     showScreen('game-screen');
     startLevel();
 }
@@ -328,7 +330,6 @@ function startGameMode(mode) {
 function startLevel() {
     levelCorrectCount = 0;
     levelWrongCount = 0;
-    levelStartTime = Date.now();
     loadNewQuestion();
 }
 
@@ -340,7 +341,7 @@ function getFilteredCountriesForLevel() {
     else if (gameState.level > 10) diff = 2;
 
     let filtered = COUNTRIES.filter(c => c.difficulty <= diff);
-    if (filtered.length < 4) filtered = COUNTRIES; // Fallback
+    if (filtered.length < 4) filtered = COUNTRIES;
     return filtered;
 }
 
@@ -350,20 +351,28 @@ function loadNewQuestion() {
     document.getElementById('hint-count').innerText = gameState.hints;
     document.getElementById('streak-container').innerText = `🔥 ${gameState.streak}`;
     
-    // Live lives
     let hearts = '';
     for(let i=0; i<gameState.lives; i++) hearts += '❤️';
     document.getElementById('lives-container').innerText = hearts;
 
-    // Progress Bar
     let prog = ((gameState.level - 1) / 100) * 100;
     document.getElementById('progress-bar').style.width = `${prog}%`;
 
-    // Pilih negara benar
     let pool = getFilteredCountriesForLevel();
-    let correct = pool[Math.floor(Math.random() * pool.length)];
+    
+    // Filter negara yang belum pernah muncul di sesi ini agar tidak bolak-balik muter di negara yang sama
+    let availablePool = pool.filter(c => !sessionUsedCountries.includes(c.country));
+    if (availablePool.length === 0) {
+        // Jika semua negara di tingkat ini sudah habis, reset memori khusus tingkat ini
+        sessionUsedCountries = [];
+        availablePool = pool;
+    }
 
-    // Pilih 3 salah
+    // Pilih negara benar secara acak murni dari pool yang belum keluar
+    let correct = availablePool[Math.floor(Math.random() * availablePool.length)];
+    sessionUsedCountries.push(correct.country); // Tandai sudah keluar
+
+    // Pilih 3 pilihan salah yang mengecoh dari total database (pastikan tidak sama dengan jawaban benar)
     let wrongPool = COUNTRIES.filter(c => c.country !== correct.country);
     let wrongOptions = [];
     while(wrongOptions.length < 3) {
@@ -374,7 +383,7 @@ function loadNewQuestion() {
     }
 
     let options = [correct, ...wrongOptions];
-    // Acak posisi pilihan
+    // Acak posisi pilihan jawaban
     options.sort(() => Math.random() - 0.5);
 
     currentQuestion = {
@@ -382,7 +391,6 @@ function loadNewQuestion() {
         options: options
     };
 
-    // Tampilkan Bendera (Menggunakan CDN flagcdn.com)
     const imgEl = document.getElementById('flag-img');
     const loaderEl = document.getElementById('flag-loader');
     loaderEl.style.display = 'block';
@@ -396,7 +404,6 @@ function loadNewQuestion() {
     };
     imgEl.src = flagUrl;
 
-    // Render Pilihan
     const optContainer = document.getElementById('options-container');
     optContainer.innerHTML = '';
     options.forEach(opt => {
@@ -407,10 +414,10 @@ function loadNewQuestion() {
         optContainer.appendChild(btn);
     });
 
-    // Set Timer berdasarkan kesulitan level
-    let timeLimit = 20;
-    if (gameState.level > 50) timeLimit = 10;
-    else if (gameState.level > 20) timeLimit = 15;
+    // Waktu dibuat lebih ketat & menantang (15 detik, 12 detik, hingga 8 detik)
+    let timeLimit = 15;
+    if (gameState.level > 50) timeLimit = 8;
+    else if (gameState.level > 20) timeLimit = 12;
 
     startTimer(timeLimit);
 }
@@ -441,7 +448,6 @@ function timeOutAnswer() {
     gameState.streak = 0;
     gameState.lives--;
     
-    // Highlight jawaban benar
     highlightCorrectAnswer();
     setTimeout(() => {
         checkGameStatusAfterAnswer();
@@ -464,9 +470,8 @@ function selectAnswer(selectedCountry, btnElement) {
         gameState.streak++;
         if (gameState.streak > gameState.bestStreak) gameState.bestStreak = gameState.streak;
 
-        // Hitung poin bonus kecepatan
-        let speedBonus = Math.ceil(timeLeft * 5);
-        let comboBonus = gameState.streak >= 10 ? 300 : (gameState.streak >= 5 ? 200 : (gameState.streak >= 3 ? 150 : 100));
+        let speedBonus = Math.ceil(timeLeft * 6);
+        let comboBonus = gameState.streak >= 10 ? 350 : (gameState.streak >= 5 ? 220 : (gameState.streak >= 3 ? 150 : 100));
         gameState.score += comboBonus + speedBonus;
 
         gameState.stats.correct++;
@@ -485,7 +490,7 @@ function selectAnswer(selectedCountry, btnElement) {
         levelWrongCount++;
         gameState.streak = 0;
         gameState.lives--;
-        gameState.score = Math.max(0, gameState.score - 25);
+        gameState.score = Math.max(0, gameState.score - 30);
         gameState.stats.wrong++;
 
         highlightCorrectAnswer();
@@ -509,18 +514,15 @@ function checkGameStatusAfterAnswer() {
     if (gameState.lives <= 0 || gameState.mode === 'suddendath') {
         triggerGameOver();
     } else {
-        // Lanjut ke soal berikutnya dalam level yang sama atau selesai
         finishLevelOrNext();
     }
 }
 
 function finishLevelOrNext() {
-    // Setiap level terdiri dari 5 soal untuk mode Classic
     if (levelCorrectCount + levelWrongCount >= 5 || gameState.mode !== 'classic') {
         if (gameState.mode === 'classic') {
             showLevelResult();
         } else {
-            // Mode lain lanjut terus
             loadNewQuestion();
         }
     } else {
@@ -572,7 +574,6 @@ function useHint() {
     gameState.hints--;
     document.getElementById('hint-count').innerText = gameState.hints;
 
-    // Hapus 1 jawaban salah
     const allButtons = document.querySelectorAll('.option-btn');
     let wrongBtns = Array.from(allButtons).filter(b => b.innerText !== currentQuestion.correct.country && !b.disabled);
     if (wrongBtns.length > 0) {
@@ -585,24 +586,16 @@ function useHint() {
 function checkAchievements() {
     if (gameState.stats.correct >= 1 && !gameState.achievements.firstStep) {
         gameState.achievements.firstStep = true;
-        showAchievementPopup("🏆 First Step: Menyelesaikan jawaban pertama!");
     }
     if (gameState.stats.countriesGuessed.length >= 25 && !gameState.achievements.worldTraveler) {
         gameState.achievements.worldTraveler = true;
-        showAchievementPopup("🏆 World Traveler: Menebak 25 negara berbeda!");
     }
     if (gameState.stats.countriesGuessed.length >= 100 && !gameState.achievements.flagMaster) {
         gameState.achievements.flagMaster = true;
-        showAchievementPopup("🏆 Flag Master: Menebak 100 negara!");
     }
     if (gameState.streak >= 10 && !gameState.achievements.unstoppable) {
         gameState.achievements.unstoppable = true;
-        showAchievementPopup("🏆 Unstoppable: Streak 10 jawaban benar!");
     }
-}
-
-function showAchievementPopup(msg) {
-    console.log(msg); // Bisa diperluas dengan toast UI
 }
 
 function resetGameProgress() {
@@ -619,7 +612,6 @@ function resetAllData() {
     location.reload();
 }
 
-// Statistik & Leaderboard Lokal
 function renderStats() {
     const box = document.getElementById('stats-content');
     box.innerHTML = `
@@ -648,7 +640,6 @@ function renderLeaderboard() {
         { name: "Pemain Lokal", score: gameState.stats.highestScore }
     ];
 
-    // Tambahkan skor saat ini jika belum ada
     if (gameState.stats.highestScore > 0) {
         let existing = lbData.find(item => item.score === gameState.stats.highestScore);
         if (!existing) {
