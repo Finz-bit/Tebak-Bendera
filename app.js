@@ -134,12 +134,14 @@ let gameState = {
     streak: 0,
     bestStreak: 0,
     hints: 3,
-    maxLevel: 100,
+    maxLevel: 20, // Total level classic dengan sistem multi-negara per level
     soundEnabled: true,
     theme: 'dark',
     mode: 'classic',
     shuffledDeck: [],
     deckIndex: 0,
+    currentLevelCountries: [], // Daftar negara khusus untuk level aktif saat ini
+    levelQuestionIndex: 0,     // Indeks soal ke berapa di level ini
     stats: {
         totalPlayed: 0,
         totalAnswered: 0,
@@ -318,12 +320,33 @@ function startGameMode(mode) {
     gameState.streak = 0;
     gameState.hints = 3;
     gameState.deckIndex = 0;
+    gameState.levelQuestionIndex = 0;
     
-    // Acak seluruh deck master secara permanen untuk SEMUA MODE di awal permainan
+    // Acak master deck secara total di awal game agar unik dan tidak ada duplikat global
     gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
+
+    if (mode === 'classic') {
+        setupClassicLevelCountries();
+    }
 
     showScreen('game-screen');
     startLevel();
+}
+
+// Mengatur kelompok negara per level untuk mode Classic (misal 5 negara per level) tanpa ada yang berulang
+function setupClassicLevelCountries() {
+    let itemsPerLevel = 5;
+    let startIndex = (gameState.level - 1) * itemsPerLevel;
+    
+    // Jika deck habis atau level melebihi kapasitas, acak ulang deck master
+    if (startIndex >= gameState.shuffledDeck.length) {
+        gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
+        startIndex = 0;
+        gameState.level = 1;
+    }
+
+    gameState.currentLevelCountries = gameState.shuffledDeck.slice(startIndex, startIndex + itemsPerLevel);
+    gameState.levelQuestionIndex = 0;
 }
 
 function startLevel() {
@@ -340,17 +363,26 @@ function loadNewQuestion() {
     for(let i=0; i<gameState.lives; i++) hearts += '❤️';
     document.getElementById('lives-container').innerText = hearts;
 
-    let prog = ((gameState.level - 1) / 100) * 100;
+    let prog = ((gameState.level - 1) / gameState.maxLevel) * 100;
     document.getElementById('progress-bar').style.width = `${prog}%`;
 
-    // Ambil negara berdasarkan urutan deck index yang terus maju tanpa perulangan
-    if (!gameState.shuffledDeck || gameState.shuffledDeck.length === 0 || gameState.deckIndex >= gameState.shuffledDeck.length) {
-        gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
-        gameState.deckIndex = 0;
-    }
+    let correct;
 
-    let correct = gameState.shuffledDeck[gameState.deckIndex];
-    gameState.deckIndex++;
+    if (gameState.mode === 'classic') {
+        // Ambil dari kelompok negara level saat ini secara berurutan tanpa duplikat
+        if (!gameState.currentLevelCountries || gameState.levelQuestionIndex >= gameState.currentLevelCountries.length) {
+            setupClassicLevelCountries();
+        }
+        correct = gameState.currentLevelCountries[gameState.levelQuestionIndex];
+    } else {
+        // Mode non-classic (Time Attack / Sudden Death): ambil dari deck utama secara terus menerus
+        if (!gameState.shuffledDeck || gameState.shuffledDeck.length === 0 || gameState.deckIndex >= gameState.shuffledDeck.length) {
+            gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
+            gameState.deckIndex = 0;
+        }
+        correct = gameState.shuffledDeck[gameState.deckIndex];
+        gameState.deckIndex++;
+    }
 
     // Ambil 3 pilihan salah secara acak dari database
     let wrongPool = COUNTRIES.filter(c => c.country !== correct.country);
@@ -457,7 +489,7 @@ function selectAnswer(selectedCountry, btnElement) {
 
         setTimeout(() => {
             if (gameState.mode === 'classic') {
-                showLevelResult();
+                handleClassicProgression();
             } else {
                 nextLevelProgression();
             }
@@ -491,7 +523,25 @@ function checkGameStatusAfterAnswer() {
     if (gameState.lives <= 0 || gameState.mode === 'suddendath') {
         triggerGameOver();
     } else {
-        nextLevelProgression();
+        if (gameState.mode === 'classic') {
+            handleClassicProgression();
+        } else {
+            nextLevelProgression();
+        }
+    }
+}
+
+// Mengatur alur maju di mode Classic (periksa apakah soal dalam level sudah habis)
+function handleClassicProgression() {
+    gameState.levelQuestionIndex++;
+    
+    // Jika semua soal di level ini (misal 5 negara) sudah habis dijawab, tampilkan layar sukses level
+    if (gameState.levelQuestionIndex >= gameState.currentLevelCountries.length) {
+        showLevelResult();
+    } else {
+        // Lanjut ke negara berikutnya di level yang sama tanpa mengulang negara sebelumnya
+        showScreen('game-screen');
+        startLevel();
     }
 }
 
@@ -513,20 +563,18 @@ function showLevelResult() {
 
 function nextLevel() {
     gameState.level++;
-    if (gameState.level > 100) {
-        alert("LUAR BIASA! Kamu telah menamatkan seluruh 100 level Tebak Bendera dunia!");
+    if (gameState.level > gameState.maxLevel && gameState.mode === 'classic') {
+        alert("LUAR BIASA! Kamu telah menamatkan seluruh level Classic Tebak Bendera dunia!");
         gameState.level = 1;
+        gameState.shuffledDeck = [...COUNTRIES].sort(() => Math.random() - 0.5);
     }
+    setupClassicLevelCountries();
     showScreen('game-screen');
     startLevel();
 }
 
 function nextLevelProgression() {
     gameState.level++;
-    if (gameState.level > 100 && gameState.mode === 'classic') {
-        alert("LUAR BIASA! Kamu telah menamatkan seluruh 100 level Tebak Bendera dunia!");
-        gameState.level = 1;
-    }
     showScreen('game-screen');
     startLevel();
 }
