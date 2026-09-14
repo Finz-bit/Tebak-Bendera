@@ -27,19 +27,28 @@
 
     <!-- Mode Select Screen -->
     <div id="mode-screen" class="screen">
-        <h2 class="menu-title" style="font-size: 1.3rem;">PILIH MODE PERMAINAN</h2>
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-            <div class="option-btn mode-card" data-mode="classic" style="text-align: left; cursor: pointer;">
-                <b>CLASSIC</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Tantangan bertahap keliling dunia.</span>
+        <h2 class="menu-title" style="font-size: 1.2rem;">PILIH KATEGORI / MODE</h2>
+        <div style="display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; margin-bottom: 12px; padding-right: 4px;">
+            <div class="option-btn mode-card" data-mode="classic" style="text-align: left; cursor: pointer; padding: 10px 14px;">
+                <b>🏳️ BENDERA DUNIA</b><br><span style="font-size: 0.8rem; color: var(--text-muted);">Tebak bendera negara.</span>
             </div>
-            <div class="option-btn mode-card" data-mode="timeattack" style="text-align: left; cursor: pointer;">
-                <b>TIME ATTACK</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Jawab cepat sebelum waktu habis.</span>
+            <div class="option-btn mode-card" data-mode="continent" style="text-align: left; cursor: pointer; padding: 10px 14px;">
+                <b>🌍 LOGO BENUA & ORGANISASI</b><br><span style="font-size: 0.8rem; color: var(--text-muted);">Tebak organisasi & benua dunia.</span>
             </div>
-            <div class="option-btn mode-card" data-mode="suddendath" style="text-align: left; cursor: pointer;">
-                <b>SUDDEN DEATH</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Salah sekali langsung Game Over!</span>
+            <div class="option-btn mode-card" data-mode="region" style="text-align: left; cursor: pointer; padding: 10px 14px;">
+                <b>🇮🇩 DAERAH & PROVINSI INDONESIA</b><br><span style="font-size: 0.8rem; color: var(--text-muted);">Tebak lambang daerah/peta.</span>
             </div>
-            <div class="option-btn mode-card" data-mode="passplay" style="text-align: left; cursor: pointer;">
-                <b>PASS & PLAY</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Main bergantian bersama teman di satu HP.</span>
+            <div class="option-btn mode-card" data-mode="currency" style="text-align: left; cursor: pointer; padding: 10px 14px;">
+                <b>💱 MATA UANG DUNIA</b><br><span style="font-size: 0.8rem; color: var(--text-muted);">Tebak mata uang negara.</span>
+            </div>
+            <div class="option-btn mode-card" data-mode="capital" style="text-align: left; cursor: pointer; padding: 10px 14px;">
+                <b>🏛️ IBU KOTA NEGARA</b><br><span style="font-size: 0.8rem; color: var(--text-muted);">Tebak ibu kota negara.</span>
+            </div>
+            <div class="option-btn mode-card" data-mode="timeattack" style="text-align: left; cursor: pointer; padding: 10px 14px;">
+                <b>⚡ TIME ATTACK</b><br><span style="font-size: 0.8rem; color: var(--text-muted);">Jawab cepat sebelum waktu habis.</span>
+            </div>
+            <div class="option-btn mode-card" data-mode="passplay" style="text-align: left; cursor: pointer; padding: 10px 14px;">
+                <b>👥 PASS & PLAY</b><br><span style="font-size: 0.8rem; color: var(--text-muted);">Main bergantian di 1 HP.</span>
             </div>
         </div>
         <button class="btn-primary" id="back-to-menu-from-mode" style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-color);">KEMBALI</button>
@@ -67,10 +76,10 @@
 
         <div class="flag-card">
             <div class="flag-wrapper">
-                <img id="flag-img" src="" alt="Bendera" crossorigin="anonymous">
-                <div id="flag-loader" style="position: absolute; font-size: 0.85rem; color: var(--text-muted);">Memuat bendera...</div>
+                <img id="flag-img" src="" alt="Gambar Soal" crossorigin="anonymous">
+                <div id="flag-loader" style="position: absolute; font-size: 0.85rem; color: var(--text-muted);">Memuat gambar...</div>
             </div>
-            <div class="question-text">Bendera negara mana ini?</div>
+            <div class="question-text" id="question-label">Bendera negara mana ini?</div>
         </div>
 
         <div class="options-container" id="options-container">
@@ -158,11 +167,11 @@
     <div id="help-screen" class="screen">
         <h2 class="menu-title">CARA BERMAIN</h2>
         <div style="background: var(--bg-color); border: 1px solid var(--border-color); padding: 15px; border-radius: 12px; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px; color: var(--text-muted);">
-            <p style="margin-bottom: 8px;">1. Tebak nama negara berdasarkan bendera yang muncul.</p>
+            <p style="margin-bottom: 8px;">1. Jawab pertanyaan berdasarkan gambar/petunjuk yang muncul.</p>
             <p style="margin-bottom: 8px;">2. Pilih salah satu dari 4 opsi jawaban sebelum waktu habis.</p>
             <p style="margin-bottom: 8px;">3. Jawab cepat untuk mendapatkan bonus poin dan combo streak.</p>
             <p style="margin-bottom: 8px;">4. Gunakan tombol HINT jika kesulitan (jumlah hint terbatas).</p>
-            <p>5. Selesaikan semua level atau uji kemampuanmu di mode lainnya!</p>
+            <p>5. Jelajahi berbagai kategori kuis dunia yang tersedia!</p>
         </div>
         <button class="btn-primary" id="back-to-menu-from-help" style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-color);">KEMBALI</button>
     </div>
