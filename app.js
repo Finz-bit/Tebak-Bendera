@@ -131,6 +131,8 @@ const TOTAL_LEVELS = Math.ceil(COUNTRIES.length / COUNTRIES_PER_LEVEL);
 
 let gameState = {
     score: 0,
+    scorePlayer1: 0,
+    scorePlayer2: 0,
     level: 1,
     lives: 3,
     streak: 0,
@@ -216,34 +218,12 @@ window.addEventListener('DOMContentLoaded', () => {
     loadGameData();
     applyTheme();
     initScreens();
-    injectPassAndPlayModal();
 
     setTimeout(() => {
         hideScreen('loading-screen');
         showScreen('menu-screen');
     }, 1000);
 });
-
-function injectPassAndPlayModal() {
-    if (document.getElementById('pass-play-modal')) return;
-    const modalDiv = document.createElement('div');
-    modalDiv.id = 'pass-play-modal';
-    modalDiv.className = 'screen';
-    modalDiv.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.95); z-index: 9999;
-        display: none; flex-direction: column; justify-content: center; align-items: center;
-        text-align: center; padding: 20px; color: #fff;
-    `;
-    modalDiv.innerHTML = `
-        <div style="background: #1e293b; padding: 30px; border-radius: 16px; max-width: 400px; width: 100%; border: 2px solid #3b82f6; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-            <h2 id="pass-title" style="color: #f59e0b; margin-bottom: 15px; font-size: 24px;">Giliran Berakhir!</h2>
-            <p id="pass-desc" style="font-size: 16px; margin-bottom: 25px; color: #cbd5e1;">Ops, jawabanmu kurang tepat atau waktu habis!</p>
-            <button id="btn-pass-action" style="background: #3b82f6; color: white; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);">Berikan ke Temanmu / Orang Selanjutnya</button>
-        </div>
-    `;
-    document.body.appendChild(modalDiv);
-}
 
 function loadGameData() {
     const saved = localStorage.getItem('tebak_bendera_state');
@@ -356,6 +336,8 @@ function startGameMode(mode) {
     gameState.mode = mode;
     gameState.level = 1;
     gameState.score = 0;
+    gameState.scorePlayer1 = 0;
+    gameState.scorePlayer2 = 0;
     gameState.lives = (mode === 'suddendath') ? 1 : 3;
     gameState.streak = 0;
     gameState.hints = 3;
@@ -395,7 +377,11 @@ function startLevel() {
 }
 
 function loadNewQuestion() {
-    document.getElementById('current-score').innerText = gameState.score;
+    if (gameState.mode === 'passplay') {
+        document.getElementById('current-score').innerText = `P1: ${gameState.scorePlayer1} | P2: ${gameState.scorePlayer2}`;
+    } else {
+        document.getElementById('current-score').innerText = gameState.score;
+    }
     
     if (gameState.mode === 'classic') {
         document.getElementById('current-level').innerText = `Level ${gameState.level}/${gameState.maxLevel} (Soal ${gameState.levelQuestionIndex + 1}/${COUNTRIES_PER_LEVEL})`;
@@ -544,7 +530,17 @@ function selectAnswer(selectedCountry, btnElement) {
 
         let speedBonus = Math.ceil(timeLeft * 8);
         let comboBonus = gameState.streak >= 5 ? 200 : 100;
-        gameState.score += comboBonus + speedBonus;
+        let earnedPoints = comboBonus + speedBonus;
+
+        if (gameState.mode === 'passplay') {
+            if (gameState.passAndPlayPlayer === 1) {
+                gameState.scorePlayer1 += earnedPoints;
+            } else {
+                gameState.scorePlayer2 += earnedPoints;
+            }
+        } else {
+            gameState.score += earnedPoints;
+        }
 
         if (gameState.mode === 'timeattack') {
             gameState.timeAttackSeconds += 3;
@@ -561,7 +557,8 @@ function selectAnswer(selectedCountry, btnElement) {
             if (gameState.mode === 'classic') {
                 handleClassicProgression();
             } else if (gameState.mode === 'passplay') {
-                triggerPassAndPlayTransition(true);
+                // Di mode pass-play, kalau BENAR tidak memunculkan modal, tapi langsung lanjut soal berikutnya dengan pemain yang sama!
+                loadNewQuestion();
             } else {
                 loadNewQuestion();
             }
@@ -571,7 +568,10 @@ function selectAnswer(selectedCountry, btnElement) {
         btnElement.classList.add('wrong');
         gameState.streak = 0;
         gameState.lives--;
-        gameState.score = Math.max(0, gameState.score - 30);
+        
+        if (gameState.mode !== 'passplay') {
+            gameState.score = Math.max(0, gameState.score - 30);
+        }
         gameState.stats.wrong++;
 
         if (gameState.mode === 'timeattack') {
@@ -586,6 +586,7 @@ function selectAnswer(selectedCountry, btnElement) {
 
         setTimeout(() => {
             if (gameState.mode === 'passplay') {
+                // Modal Pass & Play HANYA MUNCUL KETIKA SALAH atau WAKTU HABIS
                 triggerPassAndPlayTransition(false);
             } else {
                 checkGameStatusAfterAnswer();
@@ -602,13 +603,8 @@ function triggerPassAndPlayTransition(wasCorrect = false) {
 
     let nextPlayer = gameState.passAndPlayPlayer === 1 ? 2 : 1;
 
-    if (wasCorrect) {
-        titleEl.innerText = `Hebat! Pemain ${gameState.passAndPlayPlayer} Benar! 🎉`;
-        descEl.innerText = `Silakan berikan HP ke Pemain ${nextPlayer} untuk melanjutkan giliran berikutnya.`;
-    } else {
-        titleEl.innerText = `Sayang sekali, salah! ❌`;
-        descEl.innerText = `Berikan ke Temanmu / Orang Selanjutnya (Pemain ${nextPlayer}).`;
-    }
+    titleEl.innerText = `Sayang sekali, Pemain ${gameState.passAndPlayPlayer} Salah! ❌`;
+    descEl.innerText = `Skor P1: ${gameState.scorePlayer1} | Skor P2: ${gameState.scorePlayer2}\nBerikan HP ke Pemain ${nextPlayer} untuk melanjutkan giliran.`;
 
     modal.style.display = 'flex';
 
@@ -687,7 +683,11 @@ function nextLevel() {
 
 function triggerGameOver() {
     playSound('gameover');
-    document.getElementById('go-score').innerText = gameState.score;
+    if (gameState.mode === 'passplay') {
+        document.getElementById('go-score').innerText = `P1: ${gameState.scorePlayer1} pts | P2: ${gameState.scorePlayer2} pts`;
+    } else {
+        document.getElementById('go-score').innerText = gameState.score;
+    }
     document.getElementById('go-level').innerText = (gameState.mode === 'classic') ? gameState.level : gameState.stats.correct;
     
     if (gameState.score > gameState.stats.highestScore) gameState.stats.highestScore = gameState.score;
@@ -729,6 +729,8 @@ function checkAchievements() {
 
 function resetGameProgress() {
     gameState.score = 0;
+    gameState.scorePlayer1 = 0;
+    gameState.scorePlayer2 = 0;
     gameState.level = 1;
     gameState.lives = 3;
     gameState.streak = 0;
