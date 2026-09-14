@@ -376,23 +376,22 @@ function startLevel() {
     loadNewQuestion();
 }
 
+// FUNGSI LOAD QUESTION YANG SUDAH DIPERBARUI TAMPILANNYA
 function loadNewQuestion() {
     if (gameState.mode === 'passplay') {
-        document.getElementById('current-score').innerText = `P1: ${gameState.scorePlayer1} | P2: ${gameState.scorePlayer2}`;
+        document.getElementById('current-score').innerHTML = `👥 P1: <b>${gameState.scorePlayer1}</b> | P2: <b>${gameState.scorePlayer2}</b>`;
+        document.getElementById('current-level').innerHTML = `Giliran: <span style="color:var(--primary);">Pemain ${gameState.passAndPlayPlayer}</span>`;
     } else {
-        document.getElementById('current-score').innerText = gameState.score;
-    }
-    
-    if (gameState.mode === 'classic') {
-        document.getElementById('current-level').innerText = `Level ${gameState.level}/${gameState.maxLevel} (Soal ${gameState.levelQuestionIndex + 1}/${COUNTRIES_PER_LEVEL})`;
-        let prog = ((gameState.level - 1) / gameState.maxLevel) * 100;
-        document.getElementById('progress-bar').style.width = `${prog}%`;
-    } else if (gameState.mode === 'timeattack') {
-        document.getElementById('current-level').innerText = `⏱️ TIME ATTACK`;
-    } else if (gameState.mode === 'passplay') {
-        document.getElementById('current-level').innerText = `👥 Giliran Pemain ${gameState.passAndPlayPlayer}`;
-    } else {
-        document.getElementById('current-level').innerText = `SUDDEN DEATH`;
+        document.getElementById('current-score').innerHTML = `Skor: <b>${gameState.score}</b>`;
+        if (gameState.mode === 'classic') {
+            document.getElementById('current-level').innerHTML = `Level ${gameState.level} (${gameState.levelQuestionIndex + 1}/${COUNTRIES_PER_LEVEL})`;
+            let prog = ((gameState.level - 1) / gameState.maxLevel) * 100;
+            document.getElementById('progress-bar').style.width = `${prog}%`;
+        } else if (gameState.mode === 'timeattack') {
+            document.getElementById('current-level').innerHTML = `⏱️ Time Attack`;
+        } else {
+            document.getElementById('current-level').innerHTML = `⚡ Sudden Death`;
+        }
     }
 
     document.getElementById('hint-count').innerText = gameState.hints;
@@ -437,13 +436,13 @@ function loadNewQuestion() {
 
     const imgEl = document.getElementById('flag-img');
     const loaderEl = document.getElementById('flag-loader');
-    loaderEl.style.display = 'block';
+    if (loaderEl) loaderEl.style.display = 'block';
     imgEl.src = '';
 
     let flagUrl = `https://flagcdn.com/w640/${correct.code.toLowerCase()}.png`;
-    imgEl.onload = () => { loaderEl.style.display = 'none'; };
+    imgEl.onload = () => { if (loaderEl) loaderEl.style.display = 'none'; };
     imgEl.onerror = () => { 
-        loaderEl.innerText = "Memuat...";
+        if (loaderEl) loaderEl.innerText = "Memuat...";
         imgEl.src = `https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/${correct.code.toLowerCase()}.svg`;
     };
     imgEl.src = flagUrl;
@@ -472,12 +471,14 @@ function startTimer(seconds) {
     timerInterval = setInterval(() => {
         timeLeft -= 0.1;
         let pct = (timeLeft / maxTime) * 100;
-        timerBar.style.width = `${pct}%`;
+        if (timerBar) timerBar.style.width = `${pct}%`;
         
-        if (gameState.mode === 'timeattack') {
-            timerText.innerText = `Sisa Waktu Global: ${Math.ceil(gameState.timeAttackSeconds)}s`;
-        } else {
-            timerText.innerText = `${Math.ceil(timeLeft)}s`;
+        if (timerText) {
+            if (gameState.mode === 'timeattack') {
+                timerText.innerText = `Sisa Waktu Global: ${Math.ceil(gameState.timeAttackSeconds)}s`;
+            } else {
+                timerText.innerText = `${Math.ceil(timeLeft)}s`;
+            }
         }
 
         if (gameState.mode === 'timeattack') {
@@ -557,7 +558,6 @@ function selectAnswer(selectedCountry, btnElement) {
             if (gameState.mode === 'classic') {
                 handleClassicProgression();
             } else if (gameState.mode === 'passplay') {
-                // Di mode pass-play, kalau BENAR tidak memunculkan modal, tapi langsung lanjut soal berikutnya dengan pemain yang sama!
                 loadNewQuestion();
             } else {
                 loadNewQuestion();
@@ -586,7 +586,6 @@ function selectAnswer(selectedCountry, btnElement) {
 
         setTimeout(() => {
             if (gameState.mode === 'passplay') {
-                // Modal Pass & Play HANYA MUNCUL KETIKA SALAH atau WAKTU HABIS
                 triggerPassAndPlayTransition(false);
             } else {
                 checkGameStatusAfterAnswer();
@@ -603,22 +602,24 @@ function triggerPassAndPlayTransition(wasCorrect = false) {
 
     let nextPlayer = gameState.passAndPlayPlayer === 1 ? 2 : 1;
 
-    titleEl.innerText = `Sayang sekali, Pemain ${gameState.passAndPlayPlayer} Salah! ❌`;
-    descEl.innerText = `Skor P1: ${gameState.scorePlayer1} | Skor P2: ${gameState.scorePlayer2}\nBerikan HP ke Pemain ${nextPlayer} untuk melanjutkan giliran.`;
+    if (titleEl) titleEl.innerText = `Sayang sekali, Pemain ${gameState.passAndPlayPlayer} Salah! ❌`;
+    if (descEl) descEl.innerText = `Skor P1: ${gameState.scorePlayer1} | Skor P2: ${gameState.scorePlayer2}\nBerikan HP ke Pemain ${nextPlayer} untuk melanjutkan giliran.`;
 
-    modal.style.display = 'flex';
+    if (modal) modal.style.display = 'flex';
 
-    btnEl.onclick = () => {
-        playSound('click');
-        modal.style.display = 'none';
-        gameState.passAndPlayPlayer = nextPlayer;
+    if (btnEl) {
+        btnEl.onclick = () => {
+            playSound('click');
+            if (modal) modal.style.display = 'none';
+            gameState.passAndPlayPlayer = nextPlayer;
 
-        if (gameState.lives <= 0) {
-            triggerGameOver();
-        } else {
-            loadNewQuestion();
-        }
-    };
+            if (gameState.lives <= 0) {
+                triggerGameOver();
+            } else {
+                loadNewQuestion();
+            }
+        };
+    }
 }
 
 function highlightCorrectAnswer() {
