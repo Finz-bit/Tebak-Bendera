@@ -29,10 +29,18 @@
     <div id="mode-screen" class="screen">
         <h2 class="menu-title" style="font-size: 1.3rem;">PILIH MODE PERMAINAN</h2>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-            <button class="option-btn mode-card" data-mode="classic"><b>CLASSIC</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Tantangan bertahap keliling dunia.</span></button>
-            <button class="option-btn mode-card" data-mode="timeattack"><b>TIME ATTACK</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Jawab cepat sebelum waktu habis.</span></button>
-            <button class="option-btn mode-card" data-mode="suddendath"><b>SUDDEN DEATH</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Salah sekali langsung Game Over!</span></button>
-            <button class="option-btn mode-card" data-mode="passplay"><b>PASS & PLAY</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Main bergantian bersama teman di satu HP.</span></button>
+            <div class="option-btn mode-card" data-mode="classic" style="text-align: left; cursor: pointer;">
+                <b>CLASSIC</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Tantangan bertahap keliling dunia.</span>
+            </div>
+            <div class="option-btn mode-card" data-mode="timeattack" style="text-align: left; cursor: pointer;">
+                <b>TIME ATTACK</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Jawab cepat sebelum waktu habis.</span>
+            </div>
+            <div class="option-btn mode-card" data-mode="suddendath" style="text-align: left; cursor: pointer;">
+                <b>SUDDEN DEATH</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Salah sekali langsung Game Over!</span>
+            </div>
+            <div class="option-btn mode-card" data-mode="passplay" style="text-align: left; cursor: pointer;">
+                <b>PASS & PLAY</b><br><span style="font-size: 0.85rem; color: var(--text-muted);">Main bergantian bersama teman di satu HP.</span>
+            </div>
         </div>
         <button class="btn-primary" id="back-to-menu-from-mode" style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-color);">KEMBALI</button>
     </div>
